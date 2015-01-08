@@ -31,24 +31,6 @@ android {
     }
 }
 
-
-// Setup
-
-// 0) Setup your sonatype credentials by editing/creating ~/.gradle/gradle.properties and enter:
-// signing.keyId=<HEXADECIMCAL KEY ID RETRIVABLE VIA gpg --list-keys>
-// signing.password=<KEY PASSWORD>
-// signing.secretKeyRingFile=<PATH TO KEY RING, USUALLY ~/.gnupg/secring.gpg>
-// sonatypeUsername=<SONATYPE USERNAME OR WHATEVER YOU USE>
-// sonatypePassword=<CORRESPONDING PASSWORD>
-
-// 1) Setup your build.gradle for your android project and add this one line of code which imports this gist:
-// apply from: 'https://raw.github.com/koush/mvn-repo/master/maven.gradle'
-
-// 2) gradle clean && gradle build && gradle uploadArchives
-
-// 3) That's it!
-
-
 apply plugin: 'maven'
 apply plugin: 'signing'
 
