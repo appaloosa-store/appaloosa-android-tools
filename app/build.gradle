@@ -73,6 +73,7 @@ afterEvaluate { project ->
     def artifact_id = repo.toLowerCase()
     project.version = versionName
     project.group = package_name
+    project.description = 'Appaloosa Android Tools'
 
     uploadArchives {
         repositories {
@@ -87,14 +88,14 @@ afterEvaluate { project ->
                     authentication(userName: sonatypeUsername, password: sonatypePassword)
                 }
 
-                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
                     authentication(userName: sonatypeUsername, password: sonatypePassword)
                 }
 
                 pom.project {
                     name repo
                     packaging 'jar'
-                    description repoInfo.description
+                    description 'Appaloosa Android Tools'
                     url repoInfo.html_url
 
                     scm {
@@ -164,5 +165,5 @@ afterEvaluate { project ->
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.koushikdutta.ion:ion:2+'
+    compile 'com.koushikdutta.ion:ion:2.0.4'
 }
