@@ -1,5 +1,6 @@
 package appaloosa_store.com.appaloosa_android_tools.services;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
@@ -17,6 +18,7 @@ import java.io.InputStreamReader;
 
 import appaloosa_store.com.appaloosa_android_tools.AppaloosaTools;
 import appaloosa_store.com.appaloosa_android_tools.interfaces.ApplicationAuthorizationInterface;
+import appaloosa_store.com.appaloosa_android_tools.listeners.ApplicationAuthorizationListener;
 import appaloosa_store.com.appaloosa_android_tools.models.ApplicationAuthorization;
 import appaloosa_store.com.appaloosa_android_tools.utils.DeviceUtils;
 import appaloosa_store.com.appaloosa_android_tools.utils.SysUtils;
@@ -27,21 +29,23 @@ public class CheckBlacklistService {
     private static final String BLACKLIST_FILENAME = "BLACKLIST_STATUS";
     private static final String CHECK_BLACKLIST_URL = "%d/mobile_application_updates/is_authorized?token=%s&application_id=%s&device_id=%s&version=%d&locale=%s";
 
-    public static void checkBlacklist(Integer storeID, String storeToken, final ApplicationAuthorizationInterface activity) {
-        final Context context = AppaloosaTools.context;
-
+    public static void checkBlacklist(Integer storeID, String storeToken, Activity context, final ApplicationAuthorizationInterface listeningActiviy) {
         if(storeID == null || storeToken == null) {
             ApplicationAuthorization authorization = new ApplicationAuthorization();
             authorization.setStatus(ApplicationAuthorization.Status.REQUEST_ERROR.toString());
             authorization.setMessage(context.getString(R.string.missing_store_params));
-            activity.isNotAllowed(authorization);
+            listeningActiviy.isNotAllowed(authorization);
             return;
         }
 
         Ion.with(context)
                 .load(buildURL(storeID, storeToken))
                 .as(new TypeToken<ApplicationAuthorization>() { })
-                .setCallback(new ApplicationAuthorizationCallback(activity));
+                .setCallback(new ApplicationAuthorizationCallback(listeningActiviy));
+    }
+
+    public static void checkBlacklist(Integer storeID, String storeToken, Activity context) {
+        checkBlacklist(storeID, storeToken, context, new ApplicationAuthorizationListener(context));
     }
 
     /*

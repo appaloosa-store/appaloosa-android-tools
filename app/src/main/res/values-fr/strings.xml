@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">appaloosa-android-tools</string>
 
+    <string name="blacklist_dialog_title">Accès non authorisé</string>
+    <string name="blacklist_dialog_ok">OK</string>
     <string name="missing_store_params">Store ID ou store token manquant(s)</string>
     <string name="not_authorized_message">Vous n\'êtes pas autorisé à accéder à cette application.</string>
 </resources>

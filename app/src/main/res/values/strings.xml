@@ -2,6 +2,8 @@
     <string name="app_name">appaloosa-android-tools</string>
     <string name="server_url" translatable="false">https://appaloosa-int.herokuapp.com/</string>
 
+    <string name="blacklist_dialog_title">Unauthorized Access</string>
+    <string name="blacklist_dialog_ok">OK</string>
     <string name="missing_store_params">Missing store ID or store token</string>
     <string name="not_authorized_message">You are not allowed to access this application.</string>
 </resources>

@@ -1,5 +1,6 @@
 package appaloosa_store.com.appaloosa_android_tools;
 
+import android.app.Activity;
 import android.content.Context;
 
 import appaloosa_store.com.appaloosa_android_tools.interfaces.ApplicationAuthorizationInterface;
@@ -14,7 +15,11 @@ public class AppaloosaTools {
         instance = this;
     }
 
-    public void checkBlacklist(Integer storeID, String storeToken, ApplicationAuthorizationInterface activity) {
+    public void checkBlacklist(Integer storeID, String storeToken, Activity contextActivity, ApplicationAuthorizationInterface listeningActivity) {
+        CheckBlacklistService.checkBlacklist(storeID, storeToken, contextActivity, listeningActivity);
+    }
+
+    public void checkBlacklist(Integer storeID, String storeToken, Activity activity) {
         CheckBlacklistService.checkBlacklist(storeID, storeToken, activity);
     }
 }
