@@ -1,7 +1,5 @@
 package appaloosa_store.com.appaloosa_android_tools.models;
 
-import android.content.Context;
-
 import com.appaloosa_store.R;
 
 import appaloosa_store.com.appaloosa_android_tools.AppaloosaTools;
@@ -33,11 +31,10 @@ public class ApplicationAuthorization {
     }
 
     public static ApplicationAuthorization getApplicationAuthorizationForStatus(Status status) {
-        final Context context = AppaloosaTools.context;
         ApplicationAuthorization applicationAuthorization = new ApplicationAuthorization();
         applicationAuthorization.setStatus(status.toString());
         if(status == Status.NOT_AUTHORIZED) {
-            applicationAuthorization.setMessage(context.getString(R.string.not_authorized_message));
+            applicationAuthorization.setMessage(AppaloosaTools.getInstance().activity.getString(R.string.not_authorized_message));
         }
         return applicationAuthorization;
     }

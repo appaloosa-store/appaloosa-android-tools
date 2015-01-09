@@ -7,19 +7,20 @@ import android.content.pm.PackageManager;
 import appaloosa_store.com.appaloosa_android_tools.AppaloosaTools;
 
 public class SysUtils {
+    private static final int VERSION_CODE_PACKAGE_NOT_FOUND = -1;
+
     public static String getApplicationPackage() {
-        Context context = AppaloosaTools.context;
-        return context.getPackageName();
+        return AppaloosaTools.getInstance().activity.getPackageName();
     }
 
     public static int getApplicationVersionCode() {
-        Context context = AppaloosaTools.context;
-        PackageInfo packageInfo = null;
+        Context context = AppaloosaTools.getInstance().activity.getBaseContext();
+        PackageInfo packageInfo;
         try {
             packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             return packageInfo.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
-            return -1;
+            return VERSION_CODE_PACKAGE_NOT_FOUND;
         }
     }
 }

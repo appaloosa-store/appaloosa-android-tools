@@ -10,22 +10,22 @@ import appaloosa_store.com.appaloosa_android_tools.models.ApplicationAuthorizati
 import appaloosa_store.com.appaloosa_android_tools.utils.AlertDialogUtils;
 
 public class ApplicationAuthorizationListener implements ApplicationAuthorizationInterface {
-    private final Activity context;
+    private final Activity activity;
 
-    public ApplicationAuthorizationListener(Activity context) {
-        this.context = context;
+    public ApplicationAuthorizationListener(Activity activity) {
+        this.activity = activity;
     }
 
     @Override
     public void isAllowed(ApplicationAuthorization authorization) {
-        AlertDialogUtils.showOkDialog(context, context.getString(R.string.blacklist_dialog_title), authorization.getMessage(), null);
+        AlertDialogUtils.showOkDialog(activity, activity.getString(R.string.blacklist_dialog_title), authorization.getMessage(), null);
     }
 
     @Override
     public void isNotAllowed(ApplicationAuthorization authorization) {
-        AlertDialogUtils.showOkDialog(context, context.getString(R.string.blacklist_dialog_title), authorization.getMessage(), new DialogInterface.OnClickListener() {
+        AlertDialogUtils.showOkDialog(activity, activity.getString(R.string.blacklist_dialog_title), authorization.getMessage(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                context.finish();
+                activity.finish();
             }
         });
     }
