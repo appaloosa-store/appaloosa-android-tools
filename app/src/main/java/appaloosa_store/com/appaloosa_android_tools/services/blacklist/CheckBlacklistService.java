@@ -1,6 +1,5 @@
 package appaloosa_store.com.appaloosa_android_tools.services.blacklist;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -16,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import appaloosa_store.com.appaloosa_android_tools.AppaloosaTools;
+import appaloosa_store.com.appaloosa_android_tools.interfaces.ApplicationAuthorisationActivity;
 import appaloosa_store.com.appaloosa_android_tools.interfaces.ApplicationAuthorizationInterface;
 import appaloosa_store.com.appaloosa_android_tools.listeners.ApplicationAuthorizationListener;
 import appaloosa_store.com.appaloosa_android_tools.models.ApplicationAuthorization;
@@ -24,20 +24,20 @@ public class CheckBlacklistService {
     private static final String LOG_TAG = "APPALOOSA_TOOLS";
     private static final String BLACKLIST_FILENAME = "BLACKLIST_STATUS";
 
-    public static void checkBlacklist(Integer storeID, String storeToken, Activity context, final ApplicationAuthorizationInterface listeningActiviy) {
+    public static void checkBlacklist(Integer storeID, String storeToken, final ApplicationAuthorisationActivity listeningActivity) {
         if(storeID == null || storeToken == null) {
-            informActivityItIsNotAllowed(listeningActiviy);
+            informActivityItIsNotAllowed(listeningActivity);
         } else {
-            Ion.with(context)
+            Ion.with(listeningActivity)
                 .load(BlacklistUrlUtils.buildURL(storeID, storeToken))
                 .as(new TypeToken<ApplicationAuthorization>() {
                 })
-                .setCallback(new ApplicationAuthorizationCallback(listeningActiviy));
+                .setCallback(new ApplicationAuthorizationCallback(listeningActivity));
         }
     }
 
-    public static void checkBlacklist(Integer storeID, String storeToken, Activity context) {
-        checkBlacklist(storeID, storeToken, context, new ApplicationAuthorizationListener(context));
+    public static void checkBlacklist(Integer storeID, String storeToken) {
+        checkBlacklist(storeID, storeToken, new ApplicationAuthorizationListener());
     }
 
     /*
