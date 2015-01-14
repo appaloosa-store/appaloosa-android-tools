@@ -1,17 +1,14 @@
 # Appaloosa Android Tools
-------
 
 Add authorization and auto-update features to your apps hosted on Appaloosa Store https://www.appaloosa-store.com
 
 ## Prerequisits
-------
 
 > - Android 4.0.3+ (API lvl 15)
 > - An account on https://www.appaloosa-store.com
 
 
 ## Installation
-------
 
 ### Gradle
 Just add at your app level **build.gradle**
@@ -23,7 +20,6 @@ compile 'com.appaloosa-store:appaloosa-android-tools:+@aar'
 Soon
 
 ## Usage
-------
 
 ### Authorization
 This library provides an app authorization mechanism. Via our web admin on https://www.appaloosa-store.com, you can manage a per device access. It works by sending device information to the Appaloosa servers. In case of an offline access to your app, the status is read from a protected file on the device.
