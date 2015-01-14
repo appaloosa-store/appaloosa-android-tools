@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import appaloosa_store.com.appaloosa_android_tools.AppaloosaTools;
-import appaloosa_store.com.appaloosa_android_tools.interfaces.ApplicationAuthorisationActivity;
+import appaloosa_store.com.appaloosa_android_tools.interfaces.ApplicationAuthorizationActivity;
 import appaloosa_store.com.appaloosa_android_tools.interfaces.ApplicationAuthorizationInterface;
 import appaloosa_store.com.appaloosa_android_tools.listeners.ApplicationAuthorizationListener;
 import appaloosa_store.com.appaloosa_android_tools.models.ApplicationAuthorization;
@@ -24,7 +24,7 @@ public class CheckBlacklistService {
     private static final String LOG_TAG = "APPALOOSA_TOOLS";
     private static final String BLACKLIST_FILENAME = "BLACKLIST_STATUS";
 
-    public static void checkBlacklist(Integer storeID, String storeToken, final ApplicationAuthorisationActivity listeningActivity) {
+    public static void checkBlacklist(Integer storeID, String storeToken, final ApplicationAuthorizationActivity listeningActivity) {
         if(storeID == null || storeToken == null) {
             informActivityItIsNotAllowed(listeningActivity);
         } else {
@@ -65,15 +65,15 @@ public class CheckBlacklistService {
         ApplicationAuthorization authorization = new ApplicationAuthorization();
         authorization.setStatus(ApplicationAuthorization.Status.REQUEST_ERROR.toString());
         authorization.setMessage(AppaloosaTools.getInstance().activity.getString(R.string.missing_store_params));
-        listeningActivity.isNotAllowed(authorization);
+        listeningActivity.isNotAuthorized(authorization);
     }
 
     private static void informActivityOfAuthorization(ApplicationAuthorizationInterface activity, ApplicationAuthorization applicationAuthorization) {
         if (applicationAuthorization.isAuthorized()) {
-            activity.isAllowed(applicationAuthorization);
+            activity.isAuthorized(applicationAuthorization);
             Log.d(LOG_TAG, "device is authorized to launch this app");
         } else {
-            activity.isNotAllowed(applicationAuthorization);
+            activity.isNotAuthorized(applicationAuthorization);
             Log.d(LOG_TAG, "device is NOT authorized to launch this app");
         }
     }
