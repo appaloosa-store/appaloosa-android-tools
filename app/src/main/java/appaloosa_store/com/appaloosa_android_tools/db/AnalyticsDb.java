@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,14 +71,14 @@ public class AnalyticsDb extends SQLiteOpenHelper {
         value.put(COLUMN_TYPE, event.getType().toString());
         value.put(COLUMN_NAME, event.getName());
         value.put(COLUMN_CONNECTION, event.getConnection());
-        if (db.insert(TABLE_EVENT, null, value) != -1) {
-            synchronized (lock) {
+        synchronized (lock) {
+            if (db.insert(TABLE_EVENT, null, value) != -1) {
                 eventCount++;
                 if (eventCount >= AppaloosaAnalytics.ANALYTICS_DB_BATCH_SIZE) {
                     batchingHandler.sendMessage(batchingHandler.obtainMessage(0, AppaloosaAnalytics.ANALYTICS_DB_BATCH_SIZE_REACHED));
                 }
+                return true;
             }
-            return true;
         }
         return false;
     }
@@ -92,23 +93,24 @@ public class AnalyticsDb extends SQLiteOpenHelper {
 
     public List<Event> getAndRemoveOldestEvents(int batchSize) {
         List<Event> events = new ArrayList<>();
-        Cursor cursor = db.query(TABLE_EVENT,
-                COLUMNS,
-                null, null, null, null,
-                COLUMN_TIME + " ASC",
-                batchSize + "");
-        while (cursor.moveToNext()) {
-            events.add(new Event(cursor.getLong(COLUMN_TIME_INDEX),
-                    Event.EventType.valueOf(cursor.getString(COLUMN_TYPE_INDEX)),
-                    cursor.getString(COLUMN_NAME_INDEX),
-                    cursor.getString(COLUMN_CONNECTION_INDEX)));
+        synchronized (lock) {
+            Cursor cursor = db.query(TABLE_EVENT,
+                    COLUMNS,
+                    null, null, null, null,
+                    COLUMN_TIME + " ASC",
+                    batchSize + "");
+            while (cursor.moveToNext()) {
+                events.add(new Event(cursor.getLong(COLUMN_TIME_INDEX),
+                        Event.EventType.valueOf(cursor.getString(COLUMN_TYPE_INDEX)),
+                        cursor.getString(COLUMN_NAME_INDEX),
+                        cursor.getString(COLUMN_CONNECTION_INDEX)));
 
-            db.delete(TABLE_EVENT, COLUMN_ID + " = ?", new String[]{"" + cursor.getInt(COLUMN_ID_INDEX)});
-            synchronized (lock) {
+                db.delete(TABLE_EVENT, COLUMN_ID + " = ?", new String[]{"" + cursor.getInt(COLUMN_ID_INDEX)});
+
                 eventCount--;
             }
+            cursor.close();
         }
-        cursor.close();
         return events;
     }
 }
