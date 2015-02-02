@@ -1,6 +1,8 @@
 package appaloosa_store.com.appaloosa_android_tools.utils;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
@@ -59,5 +61,16 @@ public class DeviceUtils{
             result.append(Integer.toHexString(0xFF & digest[i]));
         }
         return result.toString();
+    }
+
+    /**
+     * Returns the active network of the phone.
+     * @param c Context of the application.
+     * @return Returns "WIFI" or "MOBILE"
+     */
+    public static String getActiveNetwork(Context c) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+        final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo.getTypeName();
     }
 }
