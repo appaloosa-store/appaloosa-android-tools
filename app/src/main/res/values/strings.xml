@@ -7,5 +7,6 @@
     <string name="missing_store_params">Missing store ID or store token</string>
     <string name="not_authorized_message">You are not allowed to access this application.</string>
     <string name="unknown_status_message">Could not fetch application authorization status from Appaloosa.</string>
+    <string name="starting_sdk">Starting SDK</string>
     <string name="event_not_recorded">Event was not recorded</string>
 </resources>

@@ -10,6 +10,7 @@ import com.koushikdutta.ion.Ion;
 
 import java.util.List;
 
+import appaloosa_store.com.appaloosa_android_tools.Appaloosa;
 import appaloosa_store.com.appaloosa_android_tools.analytics.AnalyticsConstant;
 import appaloosa_store.com.appaloosa_android_tools.analytics.AppaloosaAnalytics;
 import appaloosa_store.com.appaloosa_android_tools.analytics.db.AnalyticsDb;
@@ -22,12 +23,12 @@ public class AnalyticsServices {
 
     public static void registerEvent(final Event.EventCategory type, final String eventName) {
         final AnalyticsDb db = AppaloosaAnalytics.getAnalyticsDb();
-        final Event e = new Event(System.currentTimeMillis(), type, eventName, DeviceUtils.getActiveNetwork(AppaloosaAnalytics.getContext()));
+        final Event e = new Event(System.currentTimeMillis(), type, eventName, DeviceUtils.getActiveNetwork());
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if(!db.insertEvent(e)){
-                    Log.d(TAG, AppaloosaAnalytics.getContext().getResources().getString(R.string.event_not_recorded));
+                    Log.d(TAG, Appaloosa.getApplicationContext().getResources().getString(R.string.event_not_recorded));
                 }
             }
         }).start();
@@ -40,7 +41,7 @@ public class AnalyticsServices {
             public void run() {
                 List<Event> eventsToSend = db.getAndRemoveOldestEvents(AnalyticsConstant.ANALYTICS_DB_BATCH_SIZE);
                 JsonObject data = buildEventsJson(eventsToSend);
-                Ion.with(AppaloosaAnalytics.getContext())
+                Ion.with(Appaloosa.getApplicationContext())
                         .load(AnalyticsConstant.API_SERVER_BASE_URL + "analytics/record_events.json")
                         .setJsonObjectBody(data)
                         .asJsonObject()

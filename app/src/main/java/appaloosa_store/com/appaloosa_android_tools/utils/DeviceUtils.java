@@ -10,7 +10,7 @@ import android.telephony.TelephonyManager;
 import java.security.MessageDigest;
 import java.util.UUID;
 
-import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaTools;
+import appaloosa_store.com.appaloosa_android_tools.Appaloosa;
 
 public class DeviceUtils{
 
@@ -24,7 +24,7 @@ public class DeviceUtils{
     }
 
     public static String getWifiMacAddress() {
-        WifiManager manager = (WifiManager) AppaloosaTools.getInstance().activity.getSystemService(Context.WIFI_SERVICE);
+        WifiManager manager = (WifiManager) Appaloosa.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = manager.getConnectionInfo();
         if(wifiInfo == null || wifiInfo.getMacAddress() == null) {
             return getRandomUUID();
@@ -42,7 +42,7 @@ public class DeviceUtils{
     }
 
     public static String getImei() {
-        TelephonyManager telephonyManager = (TelephonyManager) AppaloosaTools.getInstance().activity.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telephonyManager = (TelephonyManager) Appaloosa.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
         String imei = null;
         if(telephonyManager != null) {
             imei = telephonyManager.getDeviceId();
@@ -63,8 +63,8 @@ public class DeviceUtils{
         return result.toString();
     }
 
-    public static String getActiveNetwork(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static String getActiveNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) Appaloosa.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo.getTypeName();
     }
