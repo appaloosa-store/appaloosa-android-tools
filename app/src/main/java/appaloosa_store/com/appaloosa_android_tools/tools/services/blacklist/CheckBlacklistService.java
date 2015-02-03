@@ -1,4 +1,4 @@
-package appaloosa_store.com.appaloosa_android_tools.services.blacklist;
+package appaloosa_store.com.appaloosa_android_tools.tools.services.blacklist;
 
 import android.content.Context;
 import android.util.Log;
@@ -14,11 +14,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import appaloosa_store.com.appaloosa_android_tools.AppaloosaTools;
-import appaloosa_store.com.appaloosa_android_tools.interfaces.ApplicationAuthorizationActivity;
-import appaloosa_store.com.appaloosa_android_tools.interfaces.ApplicationAuthorizationInterface;
-import appaloosa_store.com.appaloosa_android_tools.listeners.ApplicationAuthorizationListener;
-import appaloosa_store.com.appaloosa_android_tools.models.ApplicationAuthorization;
+import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaTools;
+import appaloosa_store.com.appaloosa_android_tools.tools.interfaces.ApplicationAuthorizationActivity;
+import appaloosa_store.com.appaloosa_android_tools.tools.interfaces.ApplicationAuthorizationInterface;
+import appaloosa_store.com.appaloosa_android_tools.tools.listeners.ApplicationAuthorizationListener;
+import appaloosa_store.com.appaloosa_android_tools.tools.models.ApplicationAuthorization;
 
 public class CheckBlacklistService {
     private static final String LOG_TAG = "APPALOOSA_TOOLS";

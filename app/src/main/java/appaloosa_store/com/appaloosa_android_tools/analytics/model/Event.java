@@ -1,22 +1,22 @@
-package appaloosa_store.com.appaloosa_android_tools.models;
+package appaloosa_store.com.appaloosa_android_tools.analytics.model;
 
 
 public class Event {
 
-    public static enum EventType {
+    public static enum EventCategory {
         APPLICATION_STARTED,
         ACTIVITY_STARTED,
         ACTIVITY_STOPPED
     }
 
     private long timestamp;
-    private EventType type;
+    private EventCategory category;
     private String name;
     private String connection;
 
-    public Event(long timestamp, EventType type, String name, String connection) {
+    public Event(long timestamp, EventCategory category, String name, String connection) {
         this.timestamp = timestamp;
-        this.type = type;
+        this.category = category;
         this.name = name;
         this.connection = connection;
     }
@@ -25,8 +25,8 @@ public class Event {
         return timestamp;
     }
 
-    public EventType getType() {
-        return type;
+    public EventCategory getCategory() {
+        return category;
     }
 
     public String getName() {
@@ -40,7 +40,7 @@ public class Event {
     @Override
     public String toString() {
         return "Event : [timestamp : " + timestamp +
-                ", type : " + type.toString() +
+                ", category : " + category.toString() +
                 ", name : " + name +
                 ", connection : " + connection;
     }

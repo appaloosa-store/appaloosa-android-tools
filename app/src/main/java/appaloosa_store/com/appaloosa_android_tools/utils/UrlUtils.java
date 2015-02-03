@@ -2,7 +2,7 @@ package appaloosa_store.com.appaloosa_android_tools.utils;
 
 import com.appaloosa_store.R;
 
-import appaloosa_store.com.appaloosa_android_tools.AppaloosaTools;
+import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaTools;
 
 public class UrlUtils {
 

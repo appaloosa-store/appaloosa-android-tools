@@ -1,8 +1,8 @@
-package appaloosa_store.com.appaloosa_android_tools.services.blacklist;
+package appaloosa_store.com.appaloosa_android_tools.tools.services.blacklist;
 
 import android.util.Base64;
 
-import appaloosa_store.com.appaloosa_android_tools.AppaloosaTools;
+import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaTools;
 import appaloosa_store.com.appaloosa_android_tools.utils.DeviceUtils;
 import appaloosa_store.com.appaloosa_android_tools.utils.SysUtils;
 import appaloosa_store.com.appaloosa_android_tools.utils.UrlUtils;

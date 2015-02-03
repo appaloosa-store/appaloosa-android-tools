@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
-import appaloosa_store.com.appaloosa_android_tools.AppaloosaTools;
+import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaTools;
 
 public class SysUtils {
     private static final int VERSION_CODE_PACKAGE_NOT_FOUND = -1;

@@ -10,7 +10,7 @@ import android.telephony.TelephonyManager;
 import java.security.MessageDigest;
 import java.util.UUID;
 
-import appaloosa_store.com.appaloosa_android_tools.AppaloosaTools;
+import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaTools;
 
 public class DeviceUtils{
 
@@ -63,13 +63,8 @@ public class DeviceUtils{
         return result.toString();
     }
 
-    /**
-     * Returns the active network of the phone.
-     * @param c Context of the application.
-     * @return Returns "WIFI" or "MOBILE"
-     */
-    public static String getActiveNetwork(Context c) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static String getActiveNetwork(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo.getTypeName();
     }

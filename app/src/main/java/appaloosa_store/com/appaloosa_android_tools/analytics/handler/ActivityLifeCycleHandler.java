@@ -1,11 +1,11 @@
-package appaloosa_store.com.appaloosa_android_tools.utils;
+package appaloosa_store.com.appaloosa_android_tools.analytics.handler;
 
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
-import appaloosa_store.com.appaloosa_android_tools.models.Event;
-import appaloosa_store.com.appaloosa_android_tools.services.analytics.AnalyticsServices;
+import appaloosa_store.com.appaloosa_android_tools.analytics.model.Event;
+import appaloosa_store.com.appaloosa_android_tools.analytics.services.AnalyticsServices;
 
 public class ActivityLifeCycleHandler implements Application.ActivityLifecycleCallbacks {
 
@@ -14,7 +14,7 @@ public class ActivityLifeCycleHandler implements Application.ActivityLifecycleCa
 
     @Override
     public void onActivityStarted(Activity activity) {
-        AnalyticsServices.registerEvent(Event.EventType.ACTIVITY_STARTED, activity.getClass().getSimpleName());
+        AnalyticsServices.registerEvent(Event.EventCategory.ACTIVITY_STARTED, activity.getClass().getSimpleName());
     }
 
     @Override
@@ -25,7 +25,7 @@ public class ActivityLifeCycleHandler implements Application.ActivityLifecycleCa
 
     @Override
     public void onActivityStopped(Activity activity) {
-        AnalyticsServices.registerEvent(Event.EventType.ACTIVITY_STOPPED, activity.getClass().getSimpleName());
+        AnalyticsServices.registerEvent(Event.EventCategory.ACTIVITY_STOPPED, activity.getClass().getSimpleName());
     }
 
     @Override

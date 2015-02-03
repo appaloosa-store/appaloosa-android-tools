@@ -1,11 +1,11 @@
-package appaloosa_store.com.appaloosa_android_tools.listeners;
+package appaloosa_store.com.appaloosa_android_tools.tools.listeners;
 
 import android.content.DialogInterface;
 
 import com.appaloosa_store.R;
 
-import appaloosa_store.com.appaloosa_android_tools.interfaces.ApplicationAuthorizationActivity;
-import appaloosa_store.com.appaloosa_android_tools.models.ApplicationAuthorization;
+import appaloosa_store.com.appaloosa_android_tools.tools.interfaces.ApplicationAuthorizationActivity;
+import appaloosa_store.com.appaloosa_android_tools.tools.models.ApplicationAuthorization;
 import appaloosa_store.com.appaloosa_android_tools.utils.AlertDialogUtils;
 
 public class ApplicationAuthorizationListener extends ApplicationAuthorizationActivity {

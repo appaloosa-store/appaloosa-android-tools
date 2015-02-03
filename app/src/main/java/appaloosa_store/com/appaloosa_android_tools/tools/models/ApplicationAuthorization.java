@@ -1,8 +1,8 @@
-package appaloosa_store.com.appaloosa_android_tools.models;
+package appaloosa_store.com.appaloosa_android_tools.tools.models;
 
 import com.appaloosa_store.R;
 
-import appaloosa_store.com.appaloosa_android_tools.AppaloosaTools;
+import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaTools;
 
 public class ApplicationAuthorization {
     public static enum Status {

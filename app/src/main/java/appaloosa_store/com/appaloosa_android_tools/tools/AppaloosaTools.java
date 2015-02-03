@@ -1,9 +1,9 @@
-package appaloosa_store.com.appaloosa_android_tools;
+package appaloosa_store.com.appaloosa_android_tools.tools;
 
 import android.app.Activity;
 
-import appaloosa_store.com.appaloosa_android_tools.interfaces.ApplicationAuthorizationActivity;
-import appaloosa_store.com.appaloosa_android_tools.services.blacklist.CheckBlacklistService;
+import appaloosa_store.com.appaloosa_android_tools.tools.interfaces.ApplicationAuthorizationActivity;
+import appaloosa_store.com.appaloosa_android_tools.tools.services.blacklist.CheckBlacklistService;
 
 public class AppaloosaTools {
     public String developmentServerUrl;
