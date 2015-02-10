@@ -6,8 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 
 import appaloosa_store.com.appaloosa_android_tools.analytics.AnalyticsConstant;
 import appaloosa_store.com.appaloosa_android_tools.analytics.handler.AnalyticsBatchingHandler;
@@ -23,10 +23,7 @@ public class AnalyticsDb extends SQLiteOpenHelper {
     private static final String TABLE_EVENT = "event";
     private static final String CREATE_TABLE = "CREATE TABLE " + TABLE_EVENT +
             "(" + DBColumn.ID + " INTEGER PRIMARY KEY NOT NULL, " +
-            DBColumn.TIME + " INTEGER, " +
-            DBColumn.CATEGORY + " TEXT, " +
-            DBColumn.NAME + " TEXT, " +
-            DBColumn.CONNECTION + " TEXT);";
+            DBColumn.EVENT + " TEXT);";
 
     private SQLiteDatabase db;
     private AnalyticsBatchingHandler batchingHandler;
@@ -53,10 +50,7 @@ public class AnalyticsDb extends SQLiteOpenHelper {
 
     public boolean insertEvent(Event event) {
         ContentValues value = new ContentValues();
-        value.put(DBColumn.TIME.toString(), event.getTimestamp());
-        value.put(DBColumn.CATEGORY.toString(), event.getCategory().toString());
-        value.put(DBColumn.NAME.toString(), event.getName());
-        value.put(DBColumn.CONNECTION.toString(), event.getConnection());
+        value.put(DBColumn.EVENT.toString(), event.toJson().toString());
         synchronized (lock) {
             if (db.insert(TABLE_EVENT, null, value) != -1) {
                 eventCount++;
@@ -77,19 +71,17 @@ public class AnalyticsDb extends SQLiteOpenHelper {
         return 0;
     }
 
-    public List<Event> getAndRemoveOldestEvents(int batchSize) {
-        List<Event> events = new ArrayList<>();
+    public JsonArray getAndRemoveOldestEvents(int batchSize) {
+        JsonArray events = new JsonArray();
+        JsonParser parser = new JsonParser();
         synchronized (lock) {
             Cursor cursor = db.query(TABLE_EVENT,
                     DBColumn.COLUMNS,
                     null, null, null, null,
-                    DBColumn.TIME.toString() + " ASC",
+                    DBColumn.ID.toString() + " ASC",
                     batchSize + "");
             while (cursor.moveToNext()) {
-                events.add(new Event(cursor.getLong(DBColumn.TIME.getIndex()),
-                        Event.EventCategory.valueOf(cursor.getString(DBColumn.CATEGORY.getIndex())),
-                        cursor.getString(DBColumn.NAME.getIndex()),
-                        cursor.getString(DBColumn.CONNECTION.getIndex())));
+                events.add(parser.parse(cursor.getString(DBColumn.EVENT.getIndex())));
 
                 db.delete(TABLE_EVENT, DBColumn.ID.toString() + " = ?", new String[]{"" + cursor.getInt(DBColumn.ID.getIndex())});
 

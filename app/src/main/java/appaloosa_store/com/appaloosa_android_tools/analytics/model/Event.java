@@ -1,47 +1,48 @@
 package appaloosa_store.com.appaloosa_android_tools.analytics.model;
 
 
-public class Event {
+import com.google.gson.JsonObject;
+
+public abstract class Event {
 
     public static enum EventCategory {
         APPLICATION_STARTED,
-        ACTIVITY_STARTED,
-        ACTIVITY_STOPPED
+        ACTIVITY_PAUSED,
     }
 
-    private long timestamp;
+    private long eventTimestamp;
     private EventCategory category;
-    private String name;
-    private String connection;
 
-    public Event(long timestamp, EventCategory category, String name, String connection) {
-        this.timestamp = timestamp;
+    public Event(long eventTimestamp, EventCategory category) {
+        this.eventTimestamp = eventTimestamp;
         this.category = category;
-        this.name = name;
-        this.connection = connection;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public long getEventTimestamp() {
+        return eventTimestamp;
     }
 
     public EventCategory getCategory() {
         return category;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getConnection() {
-        return connection;
+    /**
+     * This method has to be overridden in the extending classes.
+     * The super method has to be called to fetch the first part of the JsonObject
+     * that has to be completed with the new properties of the implemented Object.
+     *
+     * @return A JsonObject with the properties of the Event class.
+     */
+    public JsonObject toJson() {
+        JsonObject jEvent = new JsonObject();
+        jEvent.addProperty("event_timestamp", this.getEventTimestamp());
+        jEvent.addProperty("category", this.getCategory().toString());
+        return jEvent;
     }
 
     @Override
     public String toString() {
-        return "Event : [timestamp : " + timestamp +
-                ", category : " + category.toString() +
-                ", name : " + name +
-                ", connection : " + connection;
+        return "Event : [eventTimestamp : " + eventTimestamp +
+                ", category : " + category.toString() + "]";
     }
 }

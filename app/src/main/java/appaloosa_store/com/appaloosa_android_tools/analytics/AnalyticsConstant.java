@@ -7,11 +7,12 @@ public class AnalyticsConstant {
     public static final int ANALYTICS_DB_BATCH_SIZE;
     static {
         if (PRODUCTION) {
+            //TODO Change endpoint once server application is online.
             API_SERVER_BASE_URL = "https://appaloosa-int.herokuapp.com/api/v1/";
             ANALYTICS_DB_BATCH_SIZE = 100;
         } else {
             API_SERVER_BASE_URL = "http://10.42.13.95:3000/";
-            ANALYTICS_DB_BATCH_SIZE = 5;
+            ANALYTICS_DB_BATCH_SIZE = 10;
         }
     }
 

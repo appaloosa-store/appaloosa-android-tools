@@ -9,4 +9,5 @@
     <string name="unknown_status_message">Could not fetch application authorization status from Appaloosa.</string>
     <string name="starting_sdk">Starting SDK</string>
     <string name="event_not_recorded">Event was not recorded</string>
+    <string name="ip_address_no_retrieved">IP address could not be retrieved</string>
 </resources>

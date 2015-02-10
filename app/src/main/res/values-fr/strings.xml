@@ -8,4 +8,5 @@
     <string name="unknown_status_message">Impossible de récupérer le statut d\'autorisation de cette application depuis Appaloosa.</string>
     <string name="starting_sdk">Démarrage du SDK</string>
     <string name="event_not_recorded">L\'évènement n\'a pas été enregistrée</string>
+    <string name="ip_address_no_retrieved">L\'adresse IP n\'a pas pu être récupérée</string>
 </resources>
