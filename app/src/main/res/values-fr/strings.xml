@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">appaloosa-android-tools</string>
+    <string name="sdk_name">appaloosa-android-tools</string>
 
     <string name="blacklist_dialog_title">Accès non authorisé</string>
     <string name="blacklist_dialog_ok">OK</string>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">appaloosa-android-tools</string>
+    <string name="sdk_name">appaloosa-android-tools</string>
     <string name="server_url" translatable="false">https://www.appaloosa-store.com/</string>
 
     <string name="blacklist_dialog_title">Unauthorized Access</string>
