@@ -1,7 +1,5 @@
 package appaloosa_store.com.appaloosa_android_tools.analytics;
 
-import android.content.Context;
-
 import appaloosa_store.com.appaloosa_android_tools.Appaloosa;
 import appaloosa_store.com.appaloosa_android_tools.analytics.db.AnalyticsDb;
 import appaloosa_store.com.appaloosa_android_tools.analytics.handler.ActivityLifeCycleHandler;
@@ -16,8 +14,7 @@ public class AppaloosaAnalytics {
     public static void start() {
         analyticsDb = new AnalyticsDb(Appaloosa.getApplicationContext(), new AnalyticsBatchingHandler());
 
-        Context context = Appaloosa.getApplicationContext();
-        AnalyticsServices.registerEvent(new ApplicationEvent(context.getResources().getString(context.getApplicationInfo().labelRes)));
+        AnalyticsServices.registerEvent(new ApplicationEvent());
 
         Appaloosa.getApplication().registerActivityLifecycleCallbacks(new ActivityLifeCycleHandler());
     }

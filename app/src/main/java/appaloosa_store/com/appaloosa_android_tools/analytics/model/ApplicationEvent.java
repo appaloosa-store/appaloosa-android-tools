@@ -4,17 +4,13 @@ import com.google.gson.JsonObject;
 
 public class ApplicationEvent extends Event {
 
-    private String appName;
 
-    public ApplicationEvent(String appName) {
+    public ApplicationEvent() {
         super(System.currentTimeMillis(), EventCategory.APPLICATION_STARTED);
-        this.appName = appName;
     }
 
     @Override
     public JsonObject toJson() {
-        JsonObject jAppEvent = super.toJson();
-        jAppEvent.addProperty("app_name", appName);
-        return jAppEvent;
+        return super.toJson();
     }
 }
