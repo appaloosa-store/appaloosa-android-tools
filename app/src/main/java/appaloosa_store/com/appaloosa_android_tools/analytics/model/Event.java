@@ -10,16 +10,16 @@ public abstract class Event {
         ACTIVITY_PAUSED,
     }
 
-    private long eventTimestamp;
+    private long eventTime;
     private EventCategory category;
 
-    public Event(long eventTimestamp, EventCategory category) {
-        this.eventTimestamp = eventTimestamp;
+    public Event(long eventTime, EventCategory category) {
+        this.eventTime = eventTime;
         this.category = category;
     }
 
-    public long getEventTimestamp() {
-        return eventTimestamp;
+    public long getEventTime() {
+        return eventTime;
     }
 
     public EventCategory getCategory() {
@@ -35,14 +35,14 @@ public abstract class Event {
      */
     public JsonObject toJson() {
         JsonObject jEvent = new JsonObject();
-        jEvent.addProperty("event_timestamp", this.getEventTimestamp());
+        jEvent.addProperty("event_time", this.getEventTime());
         jEvent.addProperty("category", this.getCategory().toString());
         return jEvent;
     }
 
     @Override
     public String toString() {
-        return "Event : [eventTimestamp : " + eventTimestamp +
+        return "Event : [eventTime : " + eventTime +
                 ", category : " + category.toString() + "]";
     }
 }

@@ -54,13 +54,13 @@ public class AnalyticsServices {
         data.add("events", eventsToSend);
         data.add("connection", buildConnectionJson());
         data.add("device", buildDeviceJson());
-        data.add("id", buildIdJson());
-        data.addProperty("timestamp", System.currentTimeMillis());
+        data.add("info", buildInfoJson());
         return data;
     }
 
-    private static JsonElement buildIdJson() {
+    private static JsonElement buildInfoJson() {
         JsonObject idJson = new JsonObject();
+        idJson.addProperty("measured_time", System.currentTimeMillis());
         idJson.addProperty("device_id", DeviceUtils.getDeviceID());
         idJson.addProperty("bundle_id", SysUtils.getApplicationPackage());
         idJson.addProperty("version_id", SysUtils.getApplicationVersionCode());
