@@ -11,11 +11,8 @@ public class AnalyticsConstant {
             API_SERVER_BASE_URL = "https://appaloosa-int.herokuapp.com/api/v1/";
             ANALYTICS_DB_BATCH_SIZE = 100;
         } else {
-            API_SERVER_BASE_URL = "http://10.42.13.98:3000/";
+            API_SERVER_BASE_URL = "http://10.42.13.99:3000/";
             ANALYTICS_DB_BATCH_SIZE = 10;
         }
     }
-
-    public static String ANALYTICS_DB_BATCH_SIZE_REACHED = "analytics_db_batch_size_reached";
-
 }

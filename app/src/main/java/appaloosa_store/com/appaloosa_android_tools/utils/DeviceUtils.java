@@ -27,6 +27,8 @@ import appaloosa_store.com.appaloosa_android_tools.Appaloosa;
 
 public class DeviceUtils{
 
+    public static final String NO_ACTIVE_NETWORK = "NONE";
+
     public static String getDeviceID() {
         final String imei = getImei();
 
@@ -79,7 +81,7 @@ public class DeviceUtils{
     public static String getActiveNetwork() {
         ConnectivityManager connectivityManager = (ConnectivityManager) Appaloosa.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        return networkInfo.getTypeName();
+        return networkInfo == null ? NO_ACTIVE_NETWORK : networkInfo.getTypeName();
     }
 
     public static String getIPAddress() {

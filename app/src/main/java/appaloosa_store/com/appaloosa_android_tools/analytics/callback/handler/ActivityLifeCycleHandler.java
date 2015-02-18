@@ -1,4 +1,4 @@
-package appaloosa_store.com.appaloosa_android_tools.analytics.handler;
+package appaloosa_store.com.appaloosa_android_tools.analytics.callback.handler;
 
 import android.app.Activity;
 import android.app.Application;

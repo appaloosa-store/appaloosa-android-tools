@@ -1,17 +1,20 @@
 package appaloosa_store.com.appaloosa_android_tools.analytics.services;
 
 import android.util.Log;
+import android.util.Pair;
 
 import com.appaloosa_store.R;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+
+import java.util.List;
 
 import appaloosa_store.com.appaloosa_android_tools.Appaloosa;
 import appaloosa_store.com.appaloosa_android_tools.analytics.AnalyticsConstant;
 import appaloosa_store.com.appaloosa_android_tools.analytics.AppaloosaAnalytics;
+import appaloosa_store.com.appaloosa_android_tools.analytics.callback.BatchSentCallback;
 import appaloosa_store.com.appaloosa_android_tools.analytics.db.AnalyticsDb;
 import appaloosa_store.com.appaloosa_android_tools.analytics.model.Event;
 import appaloosa_store.com.appaloosa_android_tools.utils.DeviceUtils;
@@ -20,6 +23,8 @@ import appaloosa_store.com.appaloosa_android_tools.utils.SysUtils;
 public class AnalyticsServices {
 
     private static final String TAG = AnalyticsServices.class.getSimpleName();
+
+    private static boolean sending;
 
     public static void registerEvent(final Event event) {
         final AnalyticsDb db = AppaloosaAnalytics.getAnalyticsDb();
@@ -38,13 +43,41 @@ public class AnalyticsServices {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                JsonArray eventsToSend = db.getAndRemoveOldestEvents(AnalyticsConstant.ANALYTICS_DB_BATCH_SIZE);
-                JsonObject data = buildJson(eventsToSend);
-                Ion.with(Appaloosa.getApplicationContext())
-                        .load(AnalyticsConstant.API_SERVER_BASE_URL + "metrics/record_metrics_batch")
-                        .setJsonObjectBody(data)
-                        .asJsonObject()
-                        .setCallback(new BatchSentCallback());
+                Pair<List<Integer>, JsonArray> idsAndOldestEvents = db.getOldestEvents(AnalyticsConstant.ANALYTICS_DB_BATCH_SIZE);
+                JsonObject data = buildJson(idsAndOldestEvents.second);
+                send(idsAndOldestEvents.first, data, 1);
+            }
+        }).start();
+    }
+
+    public static void send(List<Integer> eventIds, JsonObject data, int tryNb) {
+        Log.v(TAG, "Sending analytics batch, try n°" + tryNb);
+        setSending(true);
+        Ion.with(Appaloosa.getApplicationContext())
+                .load(AnalyticsConstant.API_SERVER_BASE_URL + "metrics/record_metrics_batch")
+                .setJsonObjectBody(data)
+                .asJsonObject()
+                .withResponse()
+                .setCallback(new BatchSentCallback(eventIds, data, tryNb));
+    }
+
+    public static boolean isSending() {
+        return sending;
+    }
+
+    public static void setSending(boolean sending) {
+        AnalyticsServices.sending = sending;
+    }
+
+    public static void deleteEventsSent(final List<Integer> eventIds) {
+        final AnalyticsDb db = AppaloosaAnalytics.getAnalyticsDb();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (!db.deleteEvents(eventIds)) {
+                    //Try once more
+                    db.deleteEvents(eventIds);
+                }
             }
         }).start();
     }
@@ -52,6 +85,7 @@ public class AnalyticsServices {
     private static JsonObject buildJson(JsonArray eventsToSend) {
         JsonObject data = new JsonObject();
         data.add("events", eventsToSend);
+        data.addProperty("events_batch_size", eventsToSend != null ? eventsToSend.size() : 0);
         data.add("connection", buildConnectionJson());
         data.add("device", buildDeviceJson());
         data.add("info", buildInfoJson());
@@ -83,18 +117,5 @@ public class AnalyticsServices {
         connectionJson.addProperty("ip_address", DeviceUtils.getIPAddress());
         //TODO Ajouter le type de données mobile ? 2G, 3G, 4G ?
         return connectionJson;
-    }
-
-    private static class BatchSentCallback implements FutureCallback<JsonObject> {
-
-        @Override
-        public void onCompleted(Exception e, JsonObject result) {
-            //TODO À implémenter si on veut récupérer des infos après envoie.
-            if (e != null) {
-                Log.d(getClass().getSimpleName(), "error : " + e.getMessage());
-            } else {
-                Log.d(getClass().getSimpleName(), "result : " + result.toString());
-            }
-        }
     }
 }
