@@ -27,7 +27,17 @@ public class ApplicationAuthorization {
     public void setMessage(String message) { this.message = message; }
 
     public boolean isAuthorized() {
-        return ApplicationAuthorization.Status.valueOf(status).equals(ApplicationAuthorization.Status.AUTHORIZED);
+        try {
+            return ApplicationAuthorization.Status.valueOf(status).equals(ApplicationAuthorization.Status.AUTHORIZED);
+        } catch(NullPointerException e) {
+            didNotRetreiveStatusFromAppaloosa();
+            return false;
+        }
+    }
+
+    private void didNotRetreiveStatusFromAppaloosa() {
+        status = "UNKNOWN";
+        message = AppaloosaTools.getInstance().activity.getResources().getString(R.string.unknown_status_message);
     }
 
     public static ApplicationAuthorization getApplicationAuthorizationForStatus(Status status) {
