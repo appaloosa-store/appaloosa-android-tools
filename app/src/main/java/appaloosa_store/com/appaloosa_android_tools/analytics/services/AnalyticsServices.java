@@ -12,7 +12,6 @@ import com.koushikdutta.ion.Ion;
 import java.util.List;
 
 import appaloosa_store.com.appaloosa_android_tools.Appaloosa;
-import appaloosa_store.com.appaloosa_android_tools.analytics.AnalyticsConstant;
 import appaloosa_store.com.appaloosa_android_tools.analytics.AppaloosaAnalytics;
 import appaloosa_store.com.appaloosa_android_tools.analytics.callback.BatchSentCallback;
 import appaloosa_store.com.appaloosa_android_tools.analytics.db.AnalyticsDb;
@@ -22,9 +21,7 @@ import appaloosa_store.com.appaloosa_android_tools.utils.SysUtils;
 
 public class AnalyticsServices {
 
-    private static final String TAG = AnalyticsServices.class.getSimpleName();
-
-    private static boolean sending;
+    public static boolean sending;
 
     public static void registerEvent(final Event event) {
         final AnalyticsDb db = AppaloosaAnalytics.getAnalyticsDb();
@@ -32,7 +29,7 @@ public class AnalyticsServices {
             @Override
             public void run() {
                 if(!db.insertEvent(event)){
-                    Log.d(TAG, Appaloosa.getApplicationContext().getResources().getString(R.string.event_not_recorded));
+                    Log.v(AppaloosaAnalytics.ANALYTICS_LOG_TAG, Appaloosa.getApplicationContext().getResources().getString(R.string.event_not_recorded));
                 }
             }
         }).start();
@@ -43,7 +40,7 @@ public class AnalyticsServices {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Pair<List<Integer>, JsonArray> idsAndOldestEvents = db.getOldestEvents(AnalyticsConstant.ANALYTICS_DB_BATCH_SIZE);
+                Pair<List<Integer>, JsonArray> idsAndOldestEvents = db.getOldestEvents(AppaloosaAnalytics.ANALYTICS_DB_BATCH_SIZE);
                 JsonObject data = buildJson(idsAndOldestEvents.second);
                 send(idsAndOldestEvents.first, data, 1);
             }
@@ -51,22 +48,14 @@ public class AnalyticsServices {
     }
 
     public static void send(List<Integer> eventIds, JsonObject data, int tryNb) {
-        Log.v(TAG, "Sending analytics batch, try n°" + tryNb);
-        setSending(true);
+        Log.v(AppaloosaAnalytics.ANALYTICS_LOG_TAG, "Sending analytics batch, try n°" + tryNb);
+        sending = true;
         Ion.with(Appaloosa.getApplicationContext())
-                .load(AnalyticsConstant.API_SERVER_BASE_URL + "metrics/record_metrics_batch")
+                .load(AppaloosaAnalytics.getAnalyticsEndpoint() + "metrics/record_metrics_batch")
                 .setJsonObjectBody(data)
                 .asJsonObject()
                 .withResponse()
                 .setCallback(new BatchSentCallback(eventIds, data, tryNb));
-    }
-
-    public static boolean isSending() {
-        return sending;
-    }
-
-    public static void setSending(boolean sending) {
-        AnalyticsServices.sending = sending;
     }
 
     public static void deleteEventsSent(final List<Integer> eventIds) {
@@ -74,10 +63,7 @@ public class AnalyticsServices {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (!db.deleteEvents(eventIds)) {
-                    //Try once more
-                    db.deleteEvents(eventIds);
-                }
+                db.deleteEvents(eventIds);
             }
         }).start();
     }
@@ -115,7 +101,6 @@ public class AnalyticsServices {
         JsonObject connectionJson = new JsonObject();
         connectionJson.addProperty("network_type", DeviceUtils.getActiveNetwork());
         connectionJson.addProperty("ip_address", DeviceUtils.getIPAddress());
-        //TODO Ajouter le type de données mobile ? 2G, 3G, 4G ?
         return connectionJson;
     }
 }

@@ -1,5 +1,6 @@
 package appaloosa_store.com.appaloosa_android_tools;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
@@ -7,10 +8,12 @@ import android.util.Log;
 import com.appaloosa_store.R;
 
 import appaloosa_store.com.appaloosa_android_tools.analytics.AppaloosaAnalytics;
+import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaTools;
+import appaloosa_store.com.appaloosa_android_tools.tools.interfaces.ApplicationAuthorizationActivity;
 
 public class Appaloosa {
 
-    private static final String TAG = Appaloosa.class.getSimpleName();
+    public static final String APPALOOSA_LOG_TAG = "APPALOOSA";
 
     private static Application application;
     private static Context applicationContext;
@@ -27,19 +30,13 @@ public class Appaloosa {
      *                    method.
      * @param storeId The id of your store. It can be found on your account on appaloosa-store.com.
      * @param storeToken The token of your store. It can be found on your account on appaloosa-store.com.
-     * @param enableAnalytics Set it to true if you want to activate the analytics for your app,
-     *                        false otherwise.
      */
-    public static void start(Application application, Integer storeId, String storeToken, boolean enableAnalytics) {
+    public static void init(Application application, Integer storeId, String storeToken) {
         Appaloosa.application = application;
         applicationContext = application.getApplicationContext();
         Appaloosa.storeId = storeId;
         Appaloosa.storeToken = storeToken;
-        Log.d(TAG, applicationContext.getResources().getString(R.string.starting_sdk));
-
-        if (enableAnalytics) {
-            AppaloosaAnalytics.start();
-        }
+        Log.d(APPALOOSA_LOG_TAG, applicationContext.getResources().getString(R.string.starting_sdk));
     }
 
     public static Application getApplication() {
@@ -56,5 +53,21 @@ public class Appaloosa {
 
     public static String getStoreToken() {
         return storeToken;
+    }
+
+    public static void startAnalytics() {
+        AppaloosaAnalytics.start();
+    }
+
+    public static void checkBlacklist(Activity activity) {
+        AppaloosaTools.getInstance().checkBlacklist(getStoreId(), getStoreToken(), activity);
+    }
+
+    public static void checkBlacklist(ApplicationAuthorizationActivity activity) {
+        AppaloosaTools.getInstance().checkBlacklist(getStoreId(), getStoreToken(), activity);
+    }
+
+    public static void setDevelopmentServerUrl(String developmentServerUrl) {
+        AppaloosaTools.getInstance().setDevelopmentServerUrl(developmentServerUrl);
     }
 }
