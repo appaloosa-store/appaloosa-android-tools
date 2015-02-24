@@ -57,6 +57,7 @@ public class AnalyticsDb extends SQLiteOpenHelper {
         if (c.moveToNext()) {
             return c.getInt(0);
         }
+        c.close();
         return 0;
     }
 
