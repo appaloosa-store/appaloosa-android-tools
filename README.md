@@ -2,11 +2,11 @@
 
 Add authorization and auto-update features to your apps hosted on Appaloosa Store https://www.appaloosa-store.com
 
-## Prerequisits
+## Prerequisites
 
 > - Android 4.0.3+ (API lvl 15)
 > - An account on https://www.appaloosa-store.com
-
+> - A native store must have been created for your account
 
 ## Installation
 
@@ -40,12 +40,12 @@ The next thing to do is to initialize the check in one of your app activities (i
 AppaloosaTools.getInstance().checkBlacklist(YOUR_APPALOOSA_STORE_ID, YOUR_APPALOOSA_STORE_TOKEN, INSTANCE_OF_THE_CURRENT_ACTIVITY);
 ```
 
-To retrieve your Appaloosa store id and token, go to the Appaloosa web admin, then click on your store's name in the menu on the top right corner. Then, click on "setings" in the dropdown menu. At the bottom of the page, you'll find your store id and token.
+To retrieve your Appaloosa store id and token, go to the Appaloosa web admin, then click on your store's name in the menu on the top right corner. Then, click on "settings" in the dropdown menu. At the bottom of the page, you'll find your store id and token.
 
 Now launch your app. The check is done asynchronously and no UI is displayed to the user. In case the device is not authorized, a dialog is shown. When the user touches "OK", the app is terminated.
 
-#### Customing the behaviour
-In case you want to ustomize the authorization behaviour, you have to do two things:
+#### Customizing the behaviour
+In case you want to customize the authorization behaviour, you have to do two things:
 
 > - Make the activity where the check is done extend ApplicationAuthorizationActivity
 > - Override isAuthorized(ApplicationAuthorization) and isNotAuthorized(ApplicationAuthorization)

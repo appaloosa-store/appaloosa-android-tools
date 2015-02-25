@@ -87,11 +87,11 @@ public class CheckBlacklistService {
             FileOutputStream fOS = AppaloosaTools.getInstance().activity.openFileOutput(BLACKLIST_FILENAME, Context.MODE_PRIVATE);
             fOS.write(statusString.getBytes());
             fOS.close();
-        } catch (IOException e) { }
+        } catch (IOException ignored) { }
     }
 
     private static ApplicationAuthorization getBlacklistStatusFromFile() {
-        Log.d(LOG_TAG, "readinging blacklist status from file");
+        Log.d(LOG_TAG, "reading blacklist status from file");
         ApplicationAuthorization applicationAuthorization;
         try {
             FileInputStream fIS = AppaloosaTools.getInstance().activity.openFileInput(BLACKLIST_FILENAME);
