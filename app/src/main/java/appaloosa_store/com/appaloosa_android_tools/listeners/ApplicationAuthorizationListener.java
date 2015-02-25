@@ -11,9 +11,7 @@ import appaloosa_store.com.appaloosa_android_tools.utils.AlertDialogUtils;
 public class ApplicationAuthorizationListener extends ApplicationAuthorizationActivity {
 
     @Override
-    public void isAuthorized(ApplicationAuthorization authorization) {
-        AlertDialogUtils.showOkDialog(this, getString(R.string.blacklist_dialog_title), authorization.getMessage(), null);
-    }
+    public void isAuthorized(ApplicationAuthorization authorization) {}
 
     @Override
     public void isNotAuthorized(ApplicationAuthorization authorization) {
