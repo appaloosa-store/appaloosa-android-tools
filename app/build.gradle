@@ -18,7 +18,7 @@ android {
     }
     sourceSets {
         main {
-            manifest.srcFile 'src/main/AndroidManifest.xml'
+            manifest.srcFile 'AndroidManifest.xml'
 
             java {
                 srcDir 'src/'
@@ -27,6 +27,119 @@ android {
         androidTest.java.srcDirs=['test/src/']
         androidTest.res.srcDirs=['test/res/']
         androidTest.assets.srcDirs=['test/assets/']
+    }
+}
+
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+
+afterEvaluate { project ->
+    String user = null
+    String repo = null
+    'git remote -v'.execute(null, project.projectDir).getText().find('git@github.com:(.*?)/(.*?).git') {
+        match ->
+            user = match[1]
+            repo = match[2]
+    }
+
+    String githubUrl = 'https://api.github.com/repos/' + user + '/' + repo;
+    if (System.getenv().GITHUB_TOKEN)
+        githubUrl += '?access_token=' + System.getenv().GITHUB_TOKEN
+    def repoInfo = new groovy.json.JsonSlurper().parseText(new URL(githubUrl).getText())
+
+    def android_manifest = new XmlParser(false, false).parseText(new File(project.projectDir, 'AndroidManifest.xml').getText())
+    def versionName = android_manifest.'@android:versionName'
+    def package_name = android_manifest.'@package'
+    def artifact_id = repo.toLowerCase()
+    project.version = versionName
+    project.group = package_name
+    project.description = 'Appaloosa Android Tools'
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                pom.groupId = "com.appaloosa-store"
+                pom.artifactId = artifact_id
+                pom.version = versionName
+
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: sonatypeUsername, password: sonatypePassword)
+                }
+
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                    authentication(userName: sonatypeUsername, password: sonatypePassword)
+                }
+
+                pom.project {
+                    name repo
+                    packaging 'jar'
+                    description 'Appaloosa Android Tools'
+                    url repoInfo.html_url
+
+                    scm {
+                        url repoInfo.git_url
+                        connection repoInfo.git_url
+                        developerConnection repoInfo.ssh_url
+                    }
+
+                    licenses {
+                        license {
+                            name 'The Apache Software License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution 'repo'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id user
+                            name user
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    signing {
+        sign configurations.archives
+    }
+
+    task androidJavadocs(type: Javadoc) {
+        source = android.sourceSets.main.java.srcDirs
+    }
+
+    task androidJavadocsJar(type: Jar) {
+        classifier = 'javadoc'
+        baseName = artifact_id
+        from androidJavadocs.destinationDir
+    }
+
+    task androidSourcesJar(type: Jar) {
+        classifier = 'sources'
+        baseName = artifact_id
+        from android.sourceSets.main.java.srcDirs
+    }
+
+    artifacts {
+        archives packageReleaseJar
+        archives androidSourcesJar
+        archives androidJavadocsJar
+    }
+}
+
+afterEvaluate { project ->
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                pom*.whenConfigured { pom ->
+                    pom.dependencies.removeAll { dep -> dep.artifactId == 'support-v4' }
+                }
+            }
+        }
     }
 }
 
