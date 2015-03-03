@@ -21,20 +21,20 @@ public class BatchSentCallback implements FutureCallback<Response<JsonObject>> {
 
     private List<Integer> eventIds;
     private JsonObject sentData;
-    private int tryNb;
+    private int currentBatchSendAttemptNb;
 
-    public BatchSentCallback(List<Integer> eventIds, JsonObject data, int tryNb) {
+    public BatchSentCallback(List<Integer> eventIds, JsonObject data, int currentBatchSendAttemptNb) {
         super();
         this.eventIds = eventIds;
         this.sentData = data;
-        this.tryNb = tryNb;
+        this.currentBatchSendAttemptNb = currentBatchSendAttemptNb;
     }
 
     @Override
     public void onCompleted(Exception e, Response<JsonObject> result) {
         if (e != null || !httpStatusCodeOk(result) || !received(result)) {
             Log.v(AppaloosaAnalytics.ANALYTICS_LOG_TAG, "An error occurred when sending Appaloosa-Store analytics");
-            retry(sentData, tryNb);
+            retry(sentData, currentBatchSendAttemptNb);
         } else {
             deleteEventsSent();
         }
@@ -59,12 +59,12 @@ public class BatchSentCallback implements FutureCallback<Response<JsonObject>> {
     }
 
 
-    private void retry(JsonObject data, int tryNb) {
-        if (tryNb < MAX_NB_OF_TRY) {
+    private void retry(JsonObject data, int currentBatchSendAttemptNb) {
+        if (currentBatchSendAttemptNb < MAX_NB_OF_TRY) {
             try {
                 Thread.sleep(TIME_BETWEEN_TRY);
                 if (!DeviceUtils.getActiveNetwork().equals(DeviceUtils.NO_ACTIVE_NETWORK)) {
-                    AnalyticsServices.send(eventIds, data, ++tryNb);
+                    AnalyticsServices.send(eventIds, data, ++currentBatchSendAttemptNb);
                     return;
                 }
             } catch (InterruptedException ignored) {}
