@@ -9,10 +9,12 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 import appaloosa_store.com.appaloosa_android_tools.analytics.AppaloosaAnalytics;
 import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaTools;
@@ -58,7 +60,9 @@ public class CheckBlacklistService {
                 AppaloosaAnalytics.setAnalyticsEndpoint(applicationAuthorization.getAnalyticsEndpoint());
                 setBlacklistStatusToFile(applicationAuthorization);
             } else {
-                informActivityOfAuthorization(activity, getBlacklistStatusFromFile());
+                ApplicationAuthorization savedApplicationAuthorization = getBlacklistStatusFromFile();
+                informActivityOfAuthorization(activity, savedApplicationAuthorization);
+                AppaloosaAnalytics.setAnalyticsEndpoint(savedApplicationAuthorization.getAnalyticsEndpoint());
             }
         }
     }
@@ -85,9 +89,14 @@ public class CheckBlacklistService {
      */
     private static void setBlacklistStatusToFile(ApplicationAuthorization applicationAuthorization) {
         String statusString = applicationAuthorization.getStatus();
+        String analyticsEndpoint = applicationAuthorization.getAnalyticsEndpoint();
         try {
             FileOutputStream fOS = AppaloosaTools.getInstance().activity.openFileOutput(BLACKLIST_FILENAME, Context.MODE_PRIVATE);
-            fOS.write(statusString.getBytes());
+            BufferedWriter bW = new BufferedWriter(new OutputStreamWriter(fOS));
+            bW.write(statusString);
+            bW.newLine();
+            bW.write(analyticsEndpoint == null ? "null" : analyticsEndpoint);
+            bW.close();
             fOS.close();
         } catch (IOException ignored) { }
     }
@@ -100,12 +109,13 @@ public class CheckBlacklistService {
             InputStreamReader iSR = new InputStreamReader(fIS);
             BufferedReader bR = new BufferedReader(iSR);
             ApplicationAuthorization.Status status = ApplicationAuthorization.Status.valueOf(bR.readLine());
+            String analyticsEndpoint = bR.readLine();
             bR.close();
             iSR.close();
             fIS.close();
-            applicationAuthorization = ApplicationAuthorization.getApplicationAuthorizationForStatus(status);
+            applicationAuthorization = ApplicationAuthorization.getApplicationAuthorizationForStatus(status, analyticsEndpoint);
         } catch (IOException e) {
-            applicationAuthorization = ApplicationAuthorization.getApplicationAuthorizationForStatus(ApplicationAuthorization.Status.AUTHORIZED);
+            applicationAuthorization = ApplicationAuthorization.getApplicationAuthorizationForStatus(ApplicationAuthorization.Status.AUTHORIZED, null);
         }
         return applicationAuthorization;
     }

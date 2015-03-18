@@ -30,6 +30,12 @@ public class ApplicationAuthorization {
     public String getAnalyticsEndpoint() {
         return analyticsEndpoint;
     }
+    public void setAnalyticsEndpoint(String analyticsEndpoint) {
+        this.analyticsEndpoint = analyticsEndpoint;
+        if(analyticsEndpoint.equals("null")) {
+            this.analyticsEndpoint = null;
+        }
+    }
 
     public boolean isAuthorized() {
         try {
@@ -45,12 +51,13 @@ public class ApplicationAuthorization {
         message = AppaloosaTools.getInstance().activity.getResources().getString(R.string.unknown_status_message);
     }
 
-    public static ApplicationAuthorization getApplicationAuthorizationForStatus(Status status) {
+    public static ApplicationAuthorization getApplicationAuthorizationForStatus(Status status, String analyticsEndpoint) {
         ApplicationAuthorization applicationAuthorization = new ApplicationAuthorization();
         applicationAuthorization.setStatus(status.toString());
         if(status == Status.NOT_AUTHORIZED) {
             applicationAuthorization.setMessage(AppaloosaTools.getInstance().activity.getString(R.string.not_authorized_message));
         }
+        applicationAuthorization.setAnalyticsEndpoint(analyticsEndpoint);
         return applicationAuthorization;
     }
 }

@@ -10,7 +10,7 @@ import appaloosa_store.com.appaloosa_android_tools.analytics.services.AnalyticsS
 public class AnalyticsBatchingHandler extends Handler {
 
     private static final Integer ANALYTICS_DB_CHECK_BATCH_SIZE_MESSAGE = 10;
-    private static final Long DELAY_BETWEEN_CHECKS = 10 * 60 * 1000l;
+    private static final Long DELAY_BETWEEN_CHECKS = 15 * 60 * 1000l;
 
     private AnalyticsDb analyticsDb;
 

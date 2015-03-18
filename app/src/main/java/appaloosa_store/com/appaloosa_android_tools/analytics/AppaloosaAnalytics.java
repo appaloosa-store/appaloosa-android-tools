@@ -17,21 +17,36 @@ import appaloosa_store.com.appaloosa_android_tools.utils.DeviceUtils;
 public class AppaloosaAnalytics {
 
     public static final String ANALYTICS_LOG_TAG = "APPALOOSA_ANALYTICS";
-    public static final int ANALYTICS_DB_BATCH_SIZE = 10;
+    public static final int ANALYTICS_DB_BATCH_SIZE = 25;
 
     private static AnalyticsDb analyticsDb;
     private static AnalyticsBatchingHandler batchingHandler;
+    private static boolean authorizedToLaunch;
     private static String analyticsEndpoint;
+    private static BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            batchingHandler.shouldRun(
+                    !DeviceUtils.getActiveNetwork().equals(DeviceUtils.NO_ACTIVE_NETWORK)
+            );
+        }
+    };
+    private static boolean alreadyStarted;
 
-    public static void start() {
+    public static void initialize() {
         analyticsDb = new AnalyticsDb(Appaloosa.getApplicationContext());
         batchingHandler = new AnalyticsBatchingHandler(analyticsDb);
+        authorizedToLaunch = true;
+        start();
+    }
 
-        AnalyticsServices.registerEvent(new ApplicationEvent());
-
-        Appaloosa.getApplication().registerActivityLifecycleCallbacks(new ActivityLifeCycleHandler());
-
-        registerConnectivityStatusListener();
+    private static void start() {
+        if(authorizedToLaunch && batchingHandler != null && analyticsEndpoint != null && !alreadyStarted) {
+            alreadyStarted = true;
+            registerConnectivityStatusListener();
+            AnalyticsServices.registerEvent(new ApplicationEvent());
+            Appaloosa.getApplication().registerActivityLifecycleCallbacks(new ActivityLifeCycleHandler());
+        }
     }
 
     public static AnalyticsDb getAnalyticsDb() {
@@ -44,20 +59,8 @@ public class AppaloosaAnalytics {
 
     public static void setAnalyticsEndpoint(String analyticsEndpoint) {
         AppaloosaAnalytics.analyticsEndpoint = analyticsEndpoint;
-        if (batchingHandler != null) {
-            batchingHandler.shouldRun(analyticsEndpoint != null);
-        }
+        start();
     }
-
-    private static BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            batchingHandler.shouldRun(
-                    analyticsEndpoint != null &&
-                    !DeviceUtils.getActiveNetwork().equals(DeviceUtils.NO_ACTIVE_NETWORK)
-            );
-        }
-    };
 
     private static void registerConnectivityStatusListener() {
         IntentFilter filter = new IntentFilter();

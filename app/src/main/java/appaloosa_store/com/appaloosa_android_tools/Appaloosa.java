@@ -56,7 +56,7 @@ public class Appaloosa {
     }
 
     public static void startAnalytics() {
-        AppaloosaAnalytics.start();
+        AppaloosaAnalytics.initialize();
     }
 
     public static void checkBlacklist(Activity activity) {

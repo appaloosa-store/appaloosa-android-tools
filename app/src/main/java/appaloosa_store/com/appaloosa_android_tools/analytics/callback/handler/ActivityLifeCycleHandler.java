@@ -9,7 +9,7 @@ import appaloosa_store.com.appaloosa_android_tools.analytics.services.AnalyticsS
 
 public class ActivityLifeCycleHandler implements Application.ActivityLifecycleCallbacks {
 
-    private long resumeTime;
+    private long resumeTime = System.currentTimeMillis();
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
