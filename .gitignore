@@ -2,7 +2,7 @@
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
-/.idea/inspectionProfiles/
+.idea/inspectionProfiles/
 .DS_Store
 /build
 .arcconfig
