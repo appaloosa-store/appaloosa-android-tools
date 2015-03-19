@@ -17,31 +17,32 @@ import appaloosa_store.com.appaloosa_android_tools.utils.DeviceUtils;
 public class AppaloosaAnalytics {
 
     public static final String ANALYTICS_LOG_TAG = "APPALOOSA_ANALYTICS";
-    public static final int ANALYTICS_DB_BATCH_SIZE = 25;
+    public static final int ANALYTICS_MIN_BATCH_SIZE = 15;
 
     private static AnalyticsDb analyticsDb;
     private static AnalyticsBatchingHandler batchingHandler;
-    private static boolean authorizedToLaunch;
+    private static boolean isInit;
     private static String analyticsEndpoint;
-    private static BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            batchingHandler.shouldRun(
-                    !DeviceUtils.getActiveNetwork().equals(DeviceUtils.NO_ACTIVE_NETWORK)
-            );
-        }
-    };
+    private static BroadcastReceiver broadcastReceiver;
     private static boolean alreadyStarted;
 
     public static void initialize() {
         analyticsDb = new AnalyticsDb(Appaloosa.getApplicationContext());
         batchingHandler = new AnalyticsBatchingHandler(analyticsDb);
-        authorizedToLaunch = true;
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                batchingHandler.shouldRun(
+                        !DeviceUtils.getActiveNetwork().equals(DeviceUtils.NO_ACTIVE_NETWORK)
+                );
+            }
+        };
+        isInit = true;
         start();
     }
 
     private static void start() {
-        if(authorizedToLaunch && batchingHandler != null && analyticsEndpoint != null && !alreadyStarted) {
+        if(isInit && batchingHandler != null && analyticsEndpoint != null && !alreadyStarted) {
             alreadyStarted = true;
             registerConnectivityStatusListener();
             AnalyticsServices.registerEvent(new ApplicationEvent());
