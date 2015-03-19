@@ -10,7 +10,7 @@ import appaloosa_store.com.appaloosa_android_tools.analytics.services.AnalyticsS
 public class AnalyticsBatchingHandler extends Handler {
 
     private static final Integer ANALYTICS_DB_CHECK_BATCH_SIZE_MESSAGE = 10;
-    private static final Long DELAY_BETWEEN_CHECKS = 15 * 60 * 1000l;
+    private static final Long DELAY_BETWEEN_CHECKS = 5 * 60 * 1000l;
 
     private AnalyticsDb analyticsDb;
 
@@ -31,16 +31,15 @@ public class AnalyticsBatchingHandler extends Handler {
     }
 
     public void shouldRun(boolean run) {
+        this.removeMessages(ANALYTICS_DB_CHECK_BATCH_SIZE_MESSAGE);
         if (run) {
-            this.sleep();
-        } else {
-            this.removeMessages(ANALYTICS_DB_CHECK_BATCH_SIZE_MESSAGE);
+            sendMessage(this.obtainMessage(ANALYTICS_DB_CHECK_BATCH_SIZE_MESSAGE));
         }
     }
 
     private void checkBatchSize() {
         int eventsCount = analyticsDb.countEvents();
-        if (eventsCount > AppaloosaAnalytics.ANALYTICS_DB_BATCH_SIZE) {
+        if (eventsCount > AppaloosaAnalytics.ANALYTICS_MIN_BATCH_SIZE) {
             AnalyticsServices.sendBatchToServer();
         }
         this.sleep();
