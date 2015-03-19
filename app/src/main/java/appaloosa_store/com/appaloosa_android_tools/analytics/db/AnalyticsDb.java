@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 import android.util.Pair;
 
 import com.google.gson.JsonArray;
@@ -24,6 +25,7 @@ public class AnalyticsDb extends SQLiteOpenHelper {
     private static final String CREATE_TABLE = "CREATE TABLE " + TABLE_EVENT +
             "(" + DBColumn.ID + " INTEGER PRIMARY KEY NOT NULL, " +
             DBColumn.EVENT + " TEXT);";
+    private static final int BATCH_SIZE_LIMIT = 200;
 
     private SQLiteDatabase db;
     private final Object lock = new Object();
@@ -61,7 +63,7 @@ public class AnalyticsDb extends SQLiteOpenHelper {
         return 0;
     }
 
-    public Pair<List<Integer>, JsonArray> getOldestEvents(int batchSize) {
+    public Pair<List<Integer>, JsonArray> getOldestEvents() {
         List<Integer> eventsIds = new ArrayList<>();
         JsonArray events = new JsonArray();
         JsonParser parser = new JsonParser();
@@ -70,7 +72,7 @@ public class AnalyticsDb extends SQLiteOpenHelper {
                     DBColumn.COLUMNS,
                     null, null, null, null,
                     DBColumn.ID.toString() + " ASC",
-                    batchSize + "");
+                    BATCH_SIZE_LIMIT + "");
             while (cursor.moveToNext()) {
                 events.add(parser.parse(cursor.getString(DBColumn.EVENT.getIndex())));
                 eventsIds.add(cursor.getInt(DBColumn.ID.getIndex()));
@@ -80,17 +82,10 @@ public class AnalyticsDb extends SQLiteOpenHelper {
         return new Pair<>(eventsIds, events);
     }
 
-    public boolean deleteEvent(int id) {
+    public void deleteEvents(List<Integer> ids) {
+        String arg = TextUtils.join(",", ids.toArray());
         synchronized (lock) {
-            return db.delete(TABLE_EVENT, DBColumn.ID.toString() + " = ?", new String[] {"" + id}) > 0;
+            db.execSQL(String.format("DELETE FROM " + TABLE_EVENT + " WHERE " + DBColumn.ID + " IN (%s);", arg));
         }
-    }
-
-    public boolean deleteEvents(List<Integer> ids) {
-        boolean allDeleted = true;
-        for (int id : ids) {
-            allDeleted &= deleteEvent(id);
-        }
-        return allDeleted;
     }
 }

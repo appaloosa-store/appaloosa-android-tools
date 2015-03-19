@@ -40,7 +40,7 @@ public class AnalyticsServices {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Pair<List<Integer>, JsonArray> idsAndOldestEvents = db.getOldestEvents(AppaloosaAnalytics.ANALYTICS_DB_BATCH_SIZE);
+                Pair<List<Integer>, JsonArray> idsAndOldestEvents = db.getOldestEvents();
                 JsonObject data = buildJson(idsAndOldestEvents.second);
                 send(idsAndOldestEvents.first, data, 1);
             }
