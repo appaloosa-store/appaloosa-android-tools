@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-import appaloosa_store.com.appaloosa_android_tools.analytics.AppaloosaAnalytics;
+import appaloosa_store.com.appaloosa_android_tools.Appaloosa;
 import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaTools;
 import appaloosa_store.com.appaloosa_android_tools.tools.interfaces.ApplicationAuthorizationActivity;
 import appaloosa_store.com.appaloosa_android_tools.tools.interfaces.ApplicationAuthorizationInterface;
@@ -57,12 +57,12 @@ public class CheckBlacklistService {
         public void onCompleted(Exception e, ApplicationAuthorization applicationAuthorization) {
             if (e == null && applicationAuthorization != null) {
                 informActivityOfAuthorization(activity, applicationAuthorization);
-                AppaloosaAnalytics.setAnalyticsEndpoint(applicationAuthorization.getAnalyticsEndpoint());
+                Appaloosa.setAnalyticsEndpoint(applicationAuthorization.getAnalyticsEndpoint());
                 setBlacklistStatusToFile(applicationAuthorization);
             } else {
                 ApplicationAuthorization savedApplicationAuthorization = getBlacklistStatusFromFile();
                 informActivityOfAuthorization(activity, savedApplicationAuthorization);
-                AppaloosaAnalytics.setAnalyticsEndpoint(savedApplicationAuthorization.getAnalyticsEndpoint());
+                Appaloosa.setAnalyticsEndpoint(savedApplicationAuthorization.getAnalyticsEndpoint());
             }
         }
     }

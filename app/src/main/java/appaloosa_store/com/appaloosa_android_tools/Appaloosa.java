@@ -34,9 +34,9 @@ public class Appaloosa {
     public static void init(Application application, Integer storeId, String storeToken) {
         Appaloosa.application = application;
         applicationContext = application.getApplicationContext();
+        Log.d(APPALOOSA_LOG_TAG, applicationContext.getResources().getString(R.string.starting_sdk));
         Appaloosa.storeId = storeId;
         Appaloosa.storeToken = storeToken;
-        Log.d(APPALOOSA_LOG_TAG, applicationContext.getResources().getString(R.string.starting_sdk));
     }
 
     public static Application getApplication() {
@@ -69,5 +69,9 @@ public class Appaloosa {
 
     public static void setDevelopmentServerUrl(String developmentServerUrl) {
         AppaloosaTools.getInstance().setDevelopmentServerUrl(developmentServerUrl);
+    }
+
+    public static void setAnalyticsEndpoint(String analyticsEndpoint) {
+        AppaloosaAnalytics.setAnalyticsEndpoint(analyticsEndpoint);
     }
 }
