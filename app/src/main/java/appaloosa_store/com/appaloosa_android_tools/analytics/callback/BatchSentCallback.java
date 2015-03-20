@@ -34,7 +34,12 @@ public class BatchSentCallback implements FutureCallback<Response<JsonObject>> {
     public void onCompleted(Exception e, Response<JsonObject> result) {
         if (e != null || !httpStatusCodeOk(result) || !received(result)) {
             Log.v(AppaloosaAnalytics.ANALYTICS_LOG_TAG, "An error occurred when sending Appaloosa-Store analytics");
-            retry(sentData, currentBatchSendAttemptNb);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    retry(sentData, currentBatchSendAttemptNb);
+                }
+            }).start();
         } else {
             deleteEventsSent();
         }
