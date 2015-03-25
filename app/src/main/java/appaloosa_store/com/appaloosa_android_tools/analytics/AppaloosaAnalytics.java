@@ -17,7 +17,6 @@ import appaloosa_store.com.appaloosa_android_tools.utils.DeviceUtils;
 public class AppaloosaAnalytics {
 
     public static final String ANALYTICS_LOG_TAG = "APPALOOSA_ANALYTICS";
-    public static final int ANALYTICS_MIN_BATCH_SIZE = 15;
 
     private static AnalyticsDb analyticsDb;
     private static AnalyticsBatchingHandler batchingHandler;
@@ -27,12 +26,12 @@ public class AppaloosaAnalytics {
     private static boolean alreadyStarted;
 
     public static void initialize() {
-        analyticsDb = new AnalyticsDb(Appaloosa.getApplicationContext());
-        batchingHandler = new AnalyticsBatchingHandler(analyticsDb);
+        batchingHandler = new AnalyticsBatchingHandler();
+        analyticsDb = new AnalyticsDb(Appaloosa.getApplicationContext(), batchingHandler);
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                batchingHandler.shouldRun(
+                batchingHandler.hasNetwork(
                         !DeviceUtils.getActiveNetwork().equals(DeviceUtils.NO_ACTIVE_NETWORK)
                 );
             }

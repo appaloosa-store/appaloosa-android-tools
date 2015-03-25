@@ -41,14 +41,10 @@ public class BatchSentCallback implements FutureCallback<Response<JsonObject>> {
                 }
             }).start();
         } else {
-            deleteEventsSent();
+            AnalyticsServices.sending = false;
+            Log.v(AppaloosaAnalytics.ANALYTICS_LOG_TAG, "Analytics sent");
+            AnalyticsServices.deleteEventsSent(eventIds);
         }
-    }
-
-    private void deleteEventsSent() {
-        AnalyticsServices.deleteEventsSent(eventIds);
-        AnalyticsServices.sending = false;
-        Log.v(AppaloosaAnalytics.ANALYTICS_LOG_TAG, "Analytics sent");
     }
 
     private boolean received(Response<JsonObject> result) {

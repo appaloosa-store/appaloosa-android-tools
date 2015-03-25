@@ -14,6 +14,7 @@ import com.google.gson.JsonParser;
 import java.util.ArrayList;
 import java.util.List;
 
+import appaloosa_store.com.appaloosa_android_tools.analytics.callback.handler.AnalyticsBatchingHandler;
 import appaloosa_store.com.appaloosa_android_tools.analytics.model.Event;
 
 public class AnalyticsDb extends SQLiteOpenHelper {
@@ -25,14 +26,16 @@ public class AnalyticsDb extends SQLiteOpenHelper {
     private static final String CREATE_TABLE = "CREATE TABLE " + TABLE_EVENT +
             "(" + DBColumn.ID + " INTEGER PRIMARY KEY NOT NULL, " +
             DBColumn.EVENT + " TEXT);";
-    private static final int BATCH_SIZE_LIMIT = 200;
+    private static final int BATCH_SIZE_LIMIT = 100;
 
     private SQLiteDatabase db;
+    private AnalyticsBatchingHandler batchingHandler;
     private final Object lock = new Object();
 
-    public AnalyticsDb(Context context) {
+    public AnalyticsDb(Context context, AnalyticsBatchingHandler batchingHandler) {
         super(context, DB_NAME, null, DB_VERSION);
         db = getWritableDatabase();
+        this.batchingHandler = batchingHandler;
     }
 
     @Override
@@ -50,17 +53,12 @@ public class AnalyticsDb extends SQLiteOpenHelper {
         ContentValues value = new ContentValues();
         value.put(DBColumn.EVENT.toString(), event.toJson().toString());
         synchronized (lock) {
-            return db.insert(TABLE_EVENT, null, value) != -1;
+            if(db.insert(TABLE_EVENT, null, value) != -1) {
+                this.shouldSendBatch();
+                return true;
+            }
+            return false;
         }
-    }
-
-    public int countEvents() {
-        Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_EVENT, null);
-        if (c.moveToNext()) {
-            return c.getInt(0);
-        }
-        c.close();
-        return 0;
     }
 
     public Pair<List<Integer>, JsonArray> getOldestEvents() {
@@ -86,6 +84,25 @@ public class AnalyticsDb extends SQLiteOpenHelper {
         String arg = TextUtils.join(",", ids.toArray());
         synchronized (lock) {
             db.execSQL(String.format("DELETE FROM " + TABLE_EVENT + " WHERE " + DBColumn.ID + " IN (%s);", arg));
+            if(countEvents() > 0) {
+                this.shouldSendBatch();
+            }
         }
+    }
+
+    private int countEvents() {
+        Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_EVENT, null);
+        int count = 0;
+        if (c.moveToNext()) {
+            count = c.getInt(0);
+        }
+        c.close();
+        return count;
+    }
+
+    private void shouldSendBatch() {
+        batchingHandler.sendMessage(
+                batchingHandler.obtainMessage(
+                        AnalyticsBatchingHandler.ANALYTICS_DB_SHOULD_SEND_BATCH));
     }
 }

@@ -36,20 +36,22 @@ public class AnalyticsServices {
     }
 
     public static void sendBatchToServer() {
+        sending = true;
         final AnalyticsDb db = AppaloosaAnalytics.getAnalyticsDb();
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Pair<List<Integer>, JsonArray> idsAndOldestEvents = db.getOldestEvents();
-                JsonObject data = buildJson(idsAndOldestEvents.second);
-                send(idsAndOldestEvents.first, data, 1);
+                if(idsAndOldestEvents.first.size() > 0) {
+                    JsonObject data = buildJson(idsAndOldestEvents.second);
+                    send(idsAndOldestEvents.first, data, 1);
+                }
             }
         }).start();
     }
 
     public static void send(List<Integer> eventIds, JsonObject data, int tryNb) {
         Log.v(AppaloosaAnalytics.ANALYTICS_LOG_TAG, "Sending analytics batch, try n°" + tryNb);
-        sending = true;
         Ion.with(Appaloosa.getApplicationContext())
                 .load(AppaloosaAnalytics.getAnalyticsEndpoint() + "metrics/record_metrics_batch")
                 .setJsonObjectBody(data)
