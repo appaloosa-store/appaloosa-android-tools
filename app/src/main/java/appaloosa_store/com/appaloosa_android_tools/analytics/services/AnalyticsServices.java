@@ -83,11 +83,12 @@ public class AnalyticsServices {
     private static JsonElement buildInfoJson() {
         JsonObject idJson = new JsonObject();
         idJson.addProperty("measured_time", System.currentTimeMillis());
-        idJson.addProperty("device_id", DeviceUtils.getDeviceID());
+        idJson.addProperty("phone_identifier", DeviceUtils.getDeviceID());
         idJson.addProperty("bundle_id", SysUtils.getApplicationPackage());
         idJson.addProperty("version_id", SysUtils.getApplicationVersionCode());
         idJson.addProperty("store_id", Appaloosa.getStoreId());
         idJson.addProperty("store_token", Appaloosa.getStoreToken());
+        idJson.addProperty("device_platform", "Android");
         return idJson;
     }
 
