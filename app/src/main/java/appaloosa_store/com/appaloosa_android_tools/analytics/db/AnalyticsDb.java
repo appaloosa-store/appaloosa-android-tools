@@ -54,7 +54,7 @@ public class AnalyticsDb extends SQLiteOpenHelper {
         value.put(DBColumn.EVENT.toString(), event.toJson().toString());
         synchronized (lock) {
             if(db.insert(TABLE_EVENT, null, value) != -1) {
-                this.shouldSendBatch();
+                this.notifyDbNotEmpty();
                 return true;
             }
             return false;
@@ -85,7 +85,7 @@ public class AnalyticsDb extends SQLiteOpenHelper {
         synchronized (lock) {
             db.execSQL(String.format("DELETE FROM " + TABLE_EVENT + " WHERE " + DBColumn.ID + " IN (%s);", arg));
             if(countEvents() > 0) {
-                this.shouldSendBatch();
+                this.notifyDbNotEmpty();
             }
         }
     }
@@ -100,9 +100,8 @@ public class AnalyticsDb extends SQLiteOpenHelper {
         return count;
     }
 
-    private void shouldSendBatch() {
-        batchingHandler.sendMessage(
-                batchingHandler.obtainMessage(
-                        AnalyticsBatchingHandler.ANALYTICS_DB_SHOULD_SEND_BATCH));
+    private void notifyDbNotEmpty() {
+        batchingHandler.sendEmptyMessage(
+                AnalyticsBatchingHandler.ANALYTICS_DB_NOT_EMPTY_MESSAGE);
     }
 }

@@ -7,7 +7,7 @@ import appaloosa_store.com.appaloosa_android_tools.analytics.services.AnalyticsS
 
 public class AnalyticsBatchingHandler extends Handler {
 
-    public static final Integer ANALYTICS_DB_SHOULD_SEND_BATCH = 10;
+    public static final Integer ANALYTICS_DB_NOT_EMPTY_MESSAGE = 10;
     private static boolean hasNetwork;
 
     @Override
@@ -16,15 +16,15 @@ public class AnalyticsBatchingHandler extends Handler {
             return;
         }
 
-        if (msg.what == ANALYTICS_DB_SHOULD_SEND_BATCH) {
+        if (msg.what == ANALYTICS_DB_NOT_EMPTY_MESSAGE) {
             AnalyticsServices.sendBatchToServer();
         }
     }
 
-    public void hasNetwork(boolean run) {
-        hasNetwork = run;
-        if(hasNetwork) {
-            this.sendMessage(this.obtainMessage(ANALYTICS_DB_SHOULD_SEND_BATCH));
+    public void updateNetworkStatus(boolean hasNetwork) {
+        AnalyticsBatchingHandler.hasNetwork = hasNetwork;
+        if(AnalyticsBatchingHandler.hasNetwork) {
+            this.sendEmptyMessage(ANALYTICS_DB_NOT_EMPTY_MESSAGE);
         }
     }
 }

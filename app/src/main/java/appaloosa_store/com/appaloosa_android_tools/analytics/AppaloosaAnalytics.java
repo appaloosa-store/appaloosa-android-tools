@@ -31,7 +31,7 @@ public class AppaloosaAnalytics {
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                batchingHandler.hasNetwork(
+                batchingHandler.updateNetworkStatus(
                         !DeviceUtils.getActiveNetwork().equals(DeviceUtils.NO_ACTIVE_NETWORK)
                 );
             }
