@@ -32,7 +32,7 @@ In order to work, this library requires your app to have the following permissio
 <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 ```
 
-Then, add the following line at the ***start of your application***. For instance the onCreate method of the first Activity. ***This method has to be called before any other one in the SDK.***
+Then, add the following line at the ***start of your application***. In your subclass of application for instance or the onCreate method of your first subclass of Activity. ***This method has to be called before any other one in the SDK.***
 ```
 Appaloosa.init(INSTANCE_OF_YOUR_APPLICATION, YOUR_APPALOOSA_STORE_ID, YOUR_APPALOOSA_STORE_TOKEN);
 ```
