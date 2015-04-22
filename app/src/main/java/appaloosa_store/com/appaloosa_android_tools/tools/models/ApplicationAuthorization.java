@@ -32,7 +32,7 @@ public class ApplicationAuthorization {
     }
     public void setAnalyticsEndpoint(String analyticsEndpoint) {
         this.analyticsEndpoint = analyticsEndpoint;
-        if(analyticsEndpoint.equals("null")) {
+        if(analyticsEndpoint == null || analyticsEndpoint.equals("null")) {
             this.analyticsEndpoint = null;
         }
     }
