@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import com.appaloosa_store.R;
+
 import appaloosa_store.com.appaloosa_android_tools.Appaloosa;
 
 public class SysUtils {
+    public static final String DEVICE_PLATFORM = "android";
     private static final int VERSION_CODE_PACKAGE_NOT_FOUND = -1;
 
     public static String getApplicationPackage() {
@@ -22,5 +25,13 @@ public class SysUtils {
         } catch (PackageManager.NameNotFoundException e) {
             return VERSION_CODE_PACKAGE_NOT_FOUND;
         }
+    }
+
+    public static String getSDKVersionCode() {
+        return Appaloosa.getApplicationContext().getResources().getString(R.string.version_code);
+    }
+
+    public static String getSDKVersionName() {
+        return Appaloosa.getApplicationContext().getResources().getString(R.string.version_name);
     }
 }
