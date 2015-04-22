@@ -50,7 +50,7 @@ public class BatchSentCallback implements FutureCallback<Response<JsonObject>> {
     private boolean received(Response<JsonObject> result) {
         JsonObject jsonResult = result.getResult();
         return jsonResult != null &&
-                jsonResult.get("received") != null &&
+                !jsonResult.get("received").isJsonNull() &&
                 jsonResult.get("received").getAsBoolean();
     }
 
