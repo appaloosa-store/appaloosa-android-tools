@@ -5,7 +5,6 @@ import android.util.Pair;
 
 import com.appaloosa_store.R;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.koushikdutta.ion.Ion;
 
@@ -16,7 +15,6 @@ import appaloosa_store.com.appaloosa_android_tools.analytics.AppaloosaAnalytics;
 import appaloosa_store.com.appaloosa_android_tools.analytics.callback.BatchSentCallback;
 import appaloosa_store.com.appaloosa_android_tools.analytics.db.AnalyticsDb;
 import appaloosa_store.com.appaloosa_android_tools.analytics.model.Event;
-import appaloosa_store.com.appaloosa_android_tools.utils.DeviceUtils;
 import appaloosa_store.com.appaloosa_android_tools.utils.SysUtils;
 
 public class AnalyticsServices {
@@ -72,38 +70,11 @@ public class AnalyticsServices {
 
     private static JsonObject buildJson(JsonArray eventsToSend) {
         JsonObject data = new JsonObject();
+        data.addProperty("device_platform", SysUtils.DEVICE_PLATFORM);
+        data.addProperty("sdk_version_code", SysUtils.getSDKVersionCode());
+        data.addProperty("sdk_version_name", SysUtils.getSDKVersionName());
         data.add("events", eventsToSend);
         data.addProperty("events_batch_size", eventsToSend != null ? eventsToSend.size() : 0);
-        data.add("connection", buildConnectionJson());
-        data.add("device", buildDeviceJson());
-        data.add("info", buildInfoJson());
         return data;
-    }
-
-    private static JsonElement buildInfoJson() {
-        JsonObject idJson = new JsonObject();
-        idJson.addProperty("measured_time", System.currentTimeMillis());
-        idJson.addProperty("phone_identifier", DeviceUtils.getDeviceID());
-        idJson.addProperty("bundle_id", SysUtils.getApplicationPackage());
-        idJson.addProperty("version_id", SysUtils.getApplicationVersionCode());
-        idJson.addProperty("store_id", Appaloosa.getStoreId());
-        idJson.addProperty("store_token", Appaloosa.getStoreToken());
-        idJson.addProperty("device_platform", "Android");
-        return idJson;
-    }
-
-    private static JsonElement buildDeviceJson() {
-        JsonObject deviceJson = new JsonObject();
-        deviceJson.addProperty("screen_resolution", DeviceUtils.getScreenResolution());
-        deviceJson.addProperty("os_version", DeviceUtils.getOSVersion());
-        deviceJson.addProperty("device_model", DeviceUtils.getDeviceModel());
-        return deviceJson;
-    }
-
-    private static JsonElement buildConnectionJson() {
-        JsonObject connectionJson = new JsonObject();
-        connectionJson.addProperty("network_type", DeviceUtils.getActiveNetwork());
-        connectionJson.addProperty("ip_address", DeviceUtils.getIPAddress());
-        return connectionJson;
     }
 }

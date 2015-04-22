@@ -16,7 +16,7 @@ public class ActivityEvent extends Event {
     @Override
     public JsonObject toJson() {
         JsonObject jActivityEvent = super.toJson();
-        jActivityEvent.addProperty("activity_name", activityName);
+        jActivityEvent.addProperty("view_name", activityName);
         jActivityEvent.addProperty("time_spent", timeSpent);
         return jActivityEvent;
     }

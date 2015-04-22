@@ -3,6 +3,10 @@ package appaloosa_store.com.appaloosa_android_tools.analytics.model;
 
 import com.google.gson.JsonObject;
 
+import appaloosa_store.com.appaloosa_android_tools.Appaloosa;
+import appaloosa_store.com.appaloosa_android_tools.utils.DeviceUtils;
+import appaloosa_store.com.appaloosa_android_tools.utils.SysUtils;
+
 public abstract class Event {
 
     public static enum EventCategory {
@@ -35,8 +39,21 @@ public abstract class Event {
      */
     public JsonObject toJson() {
         JsonObject jEvent = new JsonObject();
-        jEvent.addProperty("event_time", this.getEventTime());
+        jEvent.addProperty("measured_time", getEventTime());
         jEvent.addProperty("category", this.getCategory().toString());
+
+        jEvent.addProperty("sdk_version", SysUtils.getSDKVersionCode());
+        jEvent.addProperty("phone_identifier", DeviceUtils.getDeviceID());
+        jEvent.addProperty("bundle_id", SysUtils.getApplicationPackage());
+        jEvent.addProperty("version_id", SysUtils.getApplicationVersionCode());
+        jEvent.addProperty("store_id", Appaloosa.getStoreId());
+        jEvent.addProperty("store_token", Appaloosa.getStoreToken());
+        jEvent.addProperty("device_platform", SysUtils.DEVICE_PLATFORM);
+
+        jEvent.addProperty("network_type", DeviceUtils.getActiveNetwork());
+        jEvent.addProperty("ip_address", DeviceUtils.getIPAddress());
+        jEvent.addProperty("mobile_network_type", DeviceUtils.getMobileNetworkType());
+
         return jEvent;
     }
 
