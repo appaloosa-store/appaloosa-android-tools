@@ -1,6 +1,8 @@
 <resources>
     <string name="sdk_name">appaloosa-android-tools</string>
     <string name="server_url" translatable="false">https://www.appaloosa-store.com/</string>
+    <string name="version_code" translatable="false">4</string>
+    <string name="version_name" translatable="false">0.2.5</string>
 
     <string name="blacklist_dialog_title">Unauthorized Access</string>
     <string name="blacklist_dialog_ok">OK</string>
