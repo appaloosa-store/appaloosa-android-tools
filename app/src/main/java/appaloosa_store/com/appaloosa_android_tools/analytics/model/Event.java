@@ -9,9 +9,9 @@ import appaloosa_store.com.appaloosa_android_tools.utils.SysUtils;
 
 public abstract class Event {
 
-    public static enum EventCategory {
+    public enum EventCategory {
         APPLICATION_STARTED,
-        ACTIVITY_PAUSED,
+        VIEW_PAUSED,
     }
 
     private long eventTime;

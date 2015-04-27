@@ -2,13 +2,13 @@ package appaloosa_store.com.appaloosa_android_tools.analytics.model;
 
 import com.google.gson.JsonObject;
 
-public class ActivityEvent extends Event {
+public class ViewEvent extends Event {
 
     private long timeSpent;
     private String activityName;
 
-    public ActivityEvent(String activityName, long timeSpent) {
-        super(System.currentTimeMillis(), EventCategory.ACTIVITY_PAUSED);
+    public ViewEvent(String activityName, long timeSpent) {
+        super(System.currentTimeMillis(), EventCategory.VIEW_PAUSED);
         this.activityName = activityName;
         this.timeSpent = timeSpent;
     }

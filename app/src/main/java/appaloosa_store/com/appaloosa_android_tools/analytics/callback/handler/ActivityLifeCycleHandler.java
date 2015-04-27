@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
-import appaloosa_store.com.appaloosa_android_tools.analytics.model.ActivityEvent;
+import appaloosa_store.com.appaloosa_android_tools.analytics.model.ViewEvent;
 import appaloosa_store.com.appaloosa_android_tools.analytics.services.AnalyticsServices;
 
 public class ActivityLifeCycleHandler implements Application.ActivityLifecycleCallbacks {
@@ -24,7 +24,7 @@ public class ActivityLifeCycleHandler implements Application.ActivityLifecycleCa
 
     @Override
     public void onActivityPaused(Activity activity) {
-        AnalyticsServices.registerEvent(new ActivityEvent(activity.getClass().getSimpleName(), System.currentTimeMillis() - resumeTime));
+        AnalyticsServices.registerEvent(new ViewEvent(activity.getClass().getSimpleName(), System.currentTimeMillis() - resumeTime));
     }
 
     @Override
