@@ -1,6 +1,9 @@
 <resources>
     <string name="sdk_name">appaloosa-android-tools</string>
     <string name="server_url" translatable="false">https://www.appaloosa-store.com/</string>
+    <!-- The version code and name should stay here not be directly in the manifest.
+     They are sent with the analytics and since the Manifest is ignored when the library
+      is added to an app, the only way to retrieve them without code duplication is here. -->
     <string name="version_code" translatable="false">4</string>
     <string name="version_name" translatable="false">0.2.5</string>
 
