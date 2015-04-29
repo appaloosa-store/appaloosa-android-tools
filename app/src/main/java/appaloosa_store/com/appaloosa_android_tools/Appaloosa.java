@@ -1,6 +1,5 @@
 package appaloosa_store.com.appaloosa_android_tools;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
@@ -9,7 +8,7 @@ import com.appaloosa_store.R;
 
 import appaloosa_store.com.appaloosa_android_tools.analytics.AppaloosaAnalytics;
 import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaTools;
-import appaloosa_store.com.appaloosa_android_tools.tools.interfaces.ApplicationAuthorizationActivity;
+import appaloosa_store.com.appaloosa_android_tools.tools.interfaces.ApplicationAuthorizationInterface;
 
 public class Appaloosa {
 
@@ -59,11 +58,15 @@ public class Appaloosa {
         AppaloosaAnalytics.initialize();
     }
 
-    public static void checkBlacklist(Activity activity) {
-        AppaloosaTools.getInstance().checkBlacklist(activity);
-    }
-
-    public static void checkBlacklist(ApplicationAuthorizationActivity activity) {
+    /**
+     * This method checks if the device is blacklisted or not.
+     * With the two methods of the ApplicationAuthorizationInterface you can manage what
+     * information should be displayed to the user. In case of unauthorized use, the activity is
+     * finished after the call to isNotAuthorized(ApplicationAuthorization authorization);
+     * @param activity It should be an Object extending an Activity object and implementing the
+     *                 ApplicationAuthorizationInterface.
+     */
+    public static void checkBlacklist(ApplicationAuthorizationInterface activity) {
         AppaloosaTools.getInstance().checkBlacklist(activity);
     }
 

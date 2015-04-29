@@ -2,7 +2,7 @@ package appaloosa_store.com.appaloosa_android_tools.tools.models;
 
 import com.appaloosa_store.R;
 
-import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaTools;
+import appaloosa_store.com.appaloosa_android_tools.Appaloosa;
 
 public class ApplicationAuthorization {
     public static enum Status {
@@ -48,14 +48,14 @@ public class ApplicationAuthorization {
 
     private void didNotRetreiveStatusFromAppaloosa() {
         status = "UNKNOWN";
-        message = AppaloosaTools.getInstance().activity.getResources().getString(R.string.unknown_status_message);
+        message = Appaloosa.getApplicationContext().getResources().getString(R.string.unknown_status_message);
     }
 
     public static ApplicationAuthorization getApplicationAuthorizationForStatus(Status status, String analyticsEndpoint) {
         ApplicationAuthorization applicationAuthorization = new ApplicationAuthorization();
         applicationAuthorization.setStatus(status.toString());
         if(status == Status.NOT_AUTHORIZED) {
-            applicationAuthorization.setMessage(AppaloosaTools.getInstance().activity.getString(R.string.not_authorized_message));
+            applicationAuthorization.setMessage(Appaloosa.getApplicationContext().getString(R.string.not_authorized_message));
         }
         applicationAuthorization.setAnalyticsEndpoint(analyticsEndpoint);
         return applicationAuthorization;

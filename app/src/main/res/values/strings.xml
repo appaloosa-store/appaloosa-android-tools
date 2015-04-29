@@ -6,6 +6,11 @@
       is added to an app, the only way to retrieve them without code duplication is here. -->
     <string name="version_code" translatable="false">4</string>
     <string name="version_name" translatable="false">0.2.5</string>
+    <string name="not_an_activity" translatable="false">
+        The argument given to the checkBlacklist method is not an activity.\n
+        You should pass an Object extending Activity and implementing ApplicationAuthorizationInterface.\n
+        SDK stops here.\n
+    </string>
 
     <string name="blacklist_dialog_title">Unauthorized Access</string>
     <string name="blacklist_dialog_ok">OK</string>

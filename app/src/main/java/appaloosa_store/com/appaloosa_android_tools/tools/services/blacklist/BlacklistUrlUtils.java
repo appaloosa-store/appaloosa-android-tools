@@ -3,7 +3,6 @@ package appaloosa_store.com.appaloosa_android_tools.tools.services.blacklist;
 import android.util.Base64;
 
 import appaloosa_store.com.appaloosa_android_tools.Appaloosa;
-import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaTools;
 import appaloosa_store.com.appaloosa_android_tools.utils.DeviceUtils;
 import appaloosa_store.com.appaloosa_android_tools.utils.SysUtils;
 import appaloosa_store.com.appaloosa_android_tools.utils.UrlUtils;
@@ -19,7 +18,7 @@ public class BlacklistUrlUtils {
     private static String buildParams() {
         String imei = DeviceUtils.getDeviceID();
         String encodedImei = Base64.encodeToString(imei.getBytes(), Base64.DEFAULT).trim();
-        String locale = AppaloosaTools.getInstance().activity.getResources().getConfiguration().locale.getLanguage();
+        String locale = Appaloosa.getApplicationContext().getResources().getConfiguration().locale.getLanguage();
         String packageName = SysUtils.getApplicationPackage();
         int versionCode = SysUtils.getApplicationVersionCode();
 
