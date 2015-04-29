@@ -60,11 +60,11 @@ public class Appaloosa {
     }
 
     public static void checkBlacklist(Activity activity) {
-        AppaloosaTools.getInstance().checkBlacklist(getStoreId(), getStoreToken(), activity);
+        AppaloosaTools.getInstance().checkBlacklist(activity);
     }
 
     public static void checkBlacklist(ApplicationAuthorizationActivity activity) {
-        AppaloosaTools.getInstance().checkBlacklist(getStoreId(), getStoreToken(), activity);
+        AppaloosaTools.getInstance().checkBlacklist(activity);
     }
 
     public static void setDevelopmentServerUrl(String developmentServerUrl) {

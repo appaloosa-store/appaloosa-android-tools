@@ -20,27 +20,21 @@ import appaloosa_store.com.appaloosa_android_tools.Appaloosa;
 import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaTools;
 import appaloosa_store.com.appaloosa_android_tools.tools.interfaces.ApplicationAuthorizationActivity;
 import appaloosa_store.com.appaloosa_android_tools.tools.interfaces.ApplicationAuthorizationInterface;
-import appaloosa_store.com.appaloosa_android_tools.tools.listeners.ApplicationAuthorizationListener;
 import appaloosa_store.com.appaloosa_android_tools.tools.models.ApplicationAuthorization;
 
 public class CheckBlacklistService {
     private static final String LOG_TAG = "APPALOOSA_TOOLS";
     private static final String BLACKLIST_FILENAME = "BLACKLIST_STATUS";
 
-    public static void checkBlacklist(Integer storeID, String storeToken, final ApplicationAuthorizationActivity listeningActivity) {
-        if(storeID == null || storeToken == null) {
+    public static void checkBlacklist(final ApplicationAuthorizationActivity listeningActivity) {
+        if(Appaloosa.getStoreId() == null || Appaloosa.getStoreToken() == null) {
             informActivityItIsNotAllowed(listeningActivity);
         } else {
-            Ion.with(listeningActivity)
-                .load(BlacklistUrlUtils.buildURL(storeID, storeToken))
-                .as(new TypeToken<ApplicationAuthorization>() {
-                })
+            Ion.with(Appaloosa.getApplicationContext())
+                .load(BlacklistUrlUtils.buildURL())
+                .as(new TypeToken<ApplicationAuthorization>() {})
                 .setCallback(new ApplicationAuthorizationCallback(listeningActivity));
         }
-    }
-
-    public static void checkBlacklist(Integer storeID, String storeToken) {
-        checkBlacklist(storeID, storeToken, new ApplicationAuthorizationListener());
     }
 
     /*
@@ -71,10 +65,18 @@ public class CheckBlacklistService {
         ApplicationAuthorization authorization = new ApplicationAuthorization();
         authorization.setStatus(ApplicationAuthorization.Status.REQUEST_ERROR.toString());
         authorization.setMessage(AppaloosaTools.getInstance().activity.getString(R.string.missing_store_params));
-        listeningActivity.isNotAuthorized(authorization);
+        if (listeningActivity == null) {
+            AppaloosaTools.getInstance().displayAuthorizationToast(authorization);
+        } else {
+            listeningActivity.isNotAuthorized(authorization);
+        }
     }
 
     private static void informActivityOfAuthorization(ApplicationAuthorizationInterface activity, ApplicationAuthorization applicationAuthorization) {
+        if (activity == null) {
+            AppaloosaTools.getInstance().displayAuthorizationToast(applicationAuthorization);
+            return;
+        }
         if (applicationAuthorization.isAuthorized()) {
             activity.isAuthorized(applicationAuthorization);
             Log.d(LOG_TAG, "device is authorized to launch this app");
