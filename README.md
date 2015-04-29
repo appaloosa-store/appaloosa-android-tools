@@ -52,13 +52,12 @@ The next thing to do is to initialize the check in one of your app activities (i
 Appaloosa.checkBlacklist(INSTANCE_OF_THE_CURRENT_ACTIVITY);
 ```
 
-Now launch your app. The check is done asynchronously and no UI is displayed to the user. In case the device is not authorized, a dialog is shown. When the user touches "OK", the app is terminated.
+The INSTANCE_OF_THE_CURRENT_ACTIVITY should be an Object extending Activity and implementing the ApplicationAuthorizationInterface we provide. The two methods to implement allow you to customize the behaviour as explained below.
+Now launch your app. The check is done asynchronously and no UI is displayed to the user. If the device is not authorized, the app is terminated.
 
 #### Customizing the behaviour
-In case you want to customize the authorization behaviour, you have to do two things:
-
-> - Make the activity where the check is done extend ApplicationAuthorizationActivity
-> - Override isAuthorized(ApplicationAuthorization) and isNotAuthorized(ApplicationAuthorization)
+In case you want to customize the authorization behaviour, you only need to override the isAuthorized(ApplicationAuthorization) and isNotAuthorized(ApplicationAuthorization) methods.
+The actions you specify in the isNotAuthorized method will be executed before the app is terminated.
 
 ApplicationAuthorization has the following statuses enum corresponding to all the authorization cases: 
 ```
