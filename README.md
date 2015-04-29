@@ -13,7 +13,9 @@ Add authorization, analytics and auto-update features to your apps hosted on App
 ### Gradle
 Just add at your app level **build.gradle**
 ```
-compile 'com.appaloosa-store:appaloosa-android-tools:+@aar'
+compile('com.appaloosa-store:appaloosa-android-tools:+@aar') {
+        transitive=true
+}
 ```
 
 ### Maven
