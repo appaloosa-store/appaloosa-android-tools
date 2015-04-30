@@ -24,7 +24,7 @@ public class AppaloosaTools {
 
     public void checkBlacklist(ApplicationAuthorizationInterface listeningActivity) {
         if (!(listeningActivity instanceof Activity)) {
-            Log.w(Appaloosa.APPALOOSA_LOG_TAG, Appaloosa.getApplicationContext().getString(R.string.not_an_activity));
+            Log.e(Appaloosa.APPALOOSA_LOG_TAG, Appaloosa.getApplicationContext().getString(R.string.not_an_activity));
             return;
         }
         this.activity = (Activity) listeningActivity;
