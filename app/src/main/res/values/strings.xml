@@ -4,8 +4,8 @@
     <!-- The version code and name should stay here not be directly in the manifest.
      They are sent with the analytics and since the Manifest is ignored when the library
       is added to an app, the only way to retrieve them without code duplication is here. -->
-    <string name="version_code" translatable="false">4</string>
-    <string name="version_name" translatable="false">0.2.5</string>
+    <string name="version_code" translatable="false">5</string>
+    <string name="version_name" translatable="false">0.3.0</string>
     <string name="not_an_activity" translatable="false">
         The argument given to the checkBlacklist method is not an activity.\n
         You should pass an Object extending Activity and implementing ApplicationAuthorizationInterface.\n
