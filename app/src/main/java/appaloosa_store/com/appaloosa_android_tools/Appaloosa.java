@@ -9,12 +9,14 @@ import com.appaloosa_store.R;
 
 import appaloosa_store.com.appaloosa_android_tools.analytics.AppaloosaAnalytics;
 import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaAutoUpdate;
-import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaTools;
+import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaBlacklist;
 import appaloosa_store.com.appaloosa_android_tools.tools.interfaces.ApplicationAuthorizationInterface;
 
 public class Appaloosa {
 
     public static final String APPALOOSA_LOG_TAG = "APPALOOSA";
+
+    public static String developmentServerUrl;
 
     private static Application application;
     private static Context applicationContext;
@@ -75,7 +77,7 @@ public class Appaloosa {
      *                 ApplicationAuthorizationInterface.
      */
     public static void checkBlacklist(ApplicationAuthorizationInterface activity) {
-        AppaloosaTools.getInstance().checkBlacklist(activity);
+        AppaloosaBlacklist.getInstance().checkBlacklist(activity);
     }
 
     /**
@@ -107,7 +109,7 @@ public class Appaloosa {
      * @param developmentServerUrl String
      */
     public static void setDevelopmentServerUrl(String developmentServerUrl) {
-        AppaloosaTools.getInstance().setDevelopmentServerUrl(developmentServerUrl);
+        Appaloosa.developmentServerUrl = developmentServerUrl;
     }
 
     /**

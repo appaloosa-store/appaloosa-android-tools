@@ -9,15 +9,14 @@ import appaloosa_store.com.appaloosa_android_tools.Appaloosa;
 import appaloosa_store.com.appaloosa_android_tools.tools.interfaces.ApplicationAuthorizationInterface;
 import appaloosa_store.com.appaloosa_android_tools.tools.services.blacklist.CheckBlacklistService;
 
-public class AppaloosaTools {
-    public String developmentServerUrl;
+public class AppaloosaBlacklist {
     private Activity blacklistActivity;
 
-    private static AppaloosaTools instance;
+    private static AppaloosaBlacklist instance;
 
-    public static AppaloosaTools getInstance() {
+    public static AppaloosaBlacklist getInstance() {
         if(instance == null) {
-            instance = new AppaloosaTools();
+            instance = new AppaloosaBlacklist();
         }
         return instance;
     }
@@ -35,9 +34,5 @@ public class AppaloosaTools {
         if(this.blacklistActivity != null) {
             this.blacklistActivity.finish();
         }
-    }
-
-    public void setDevelopmentServerUrl(String url) {
-        developmentServerUrl = url;
     }
 }

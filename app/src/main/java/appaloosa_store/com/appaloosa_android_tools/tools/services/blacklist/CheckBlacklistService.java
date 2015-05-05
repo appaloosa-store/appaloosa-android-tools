@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import appaloosa_store.com.appaloosa_android_tools.Appaloosa;
-import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaTools;
+import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaBlacklist;
 import appaloosa_store.com.appaloosa_android_tools.tools.interfaces.ApplicationAuthorizationInterface;
 import appaloosa_store.com.appaloosa_android_tools.tools.models.ApplicationAuthorization;
 
@@ -66,7 +66,7 @@ public class CheckBlacklistService {
         authorization.setMessage(Appaloosa.getApplicationContext().getString(R.string.missing_store_params));
 
         authorizationInterface.isNotAuthorized(authorization);
-        AppaloosaTools.getInstance().finishActivity();
+        AppaloosaBlacklist.getInstance().finishActivity();
     }
 
     private static void informActivityOfAuthorization(ApplicationAuthorizationInterface authorizationInterface,
@@ -76,7 +76,7 @@ public class CheckBlacklistService {
             Log.d(LOG_TAG, "device is authorized to launch this app");
         } else {
             authorizationInterface.isNotAuthorized(applicationAuthorization);
-            AppaloosaTools.getInstance().finishActivity();
+            AppaloosaBlacklist.getInstance().finishActivity();
             Log.d(LOG_TAG, "device is NOT authorized to launch this app");
         }
     }
