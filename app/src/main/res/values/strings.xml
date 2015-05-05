@@ -20,4 +20,7 @@
     <string name="starting_sdk">Starting SDK</string>
     <string name="event_not_recorded">Event was not recorded</string>
     <string name="ip_address_no_retrieved">IP address could not be retrieved</string>
+    <string name="check_last_update_error">An error occurred when looking for the last update on Appaloosa.</string>
+    <string name="get_download_url_error">An error occurred when retrieving the last update download URL on Appaloosa.</string>
+    <string name="download_apk_error">An error occurred when downloading the last update apk on Appaloosa.</string>
 </resources>

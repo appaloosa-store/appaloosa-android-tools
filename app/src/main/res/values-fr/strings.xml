@@ -9,4 +9,7 @@
     <string name="starting_sdk">Démarrage du SDK</string>
     <string name="event_not_recorded">L\'évènement n\'a pas été enregistrée</string>
     <string name="ip_address_no_retrieved">L\'adresse IP n\'a pas pu être récupérée</string>
+    <string name="check_last_update_error">Impossible de récupérer la version de la dernière mise à jour sur Appaloosa.</string>
+    <string name="get_download_url_error">Impossible de récupérer l\'URL de la dernière mise à jour sur Appaloosa.</string>
+    <string name="download_apk_error">Impossible de récupérer l\'apk de la dernière mise à jour sur Appaloosa.</string>
 </resources>

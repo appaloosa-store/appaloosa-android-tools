@@ -1,5 +1,6 @@
 package appaloosa_store.com.appaloosa_android_tools;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
@@ -68,6 +69,14 @@ public class Appaloosa {
      */
     public static void checkBlacklist(ApplicationAuthorizationInterface activity) {
         AppaloosaTools.getInstance().checkBlacklist(activity);
+    }
+
+    public static void autoUpdate(Activity activity) {
+        AppaloosaTools.getInstance().autoUpdate(activity, false, null, null);
+    }
+
+    public static void autoUpdateWithMessage(Activity activity, String title, String message) {
+        AppaloosaTools.getInstance().autoUpdate(activity, true, title, message);
     }
 
     public static void setDevelopmentServerUrl(String developmentServerUrl) {
