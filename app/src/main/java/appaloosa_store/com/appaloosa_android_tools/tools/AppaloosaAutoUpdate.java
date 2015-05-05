@@ -7,7 +7,7 @@ import android.content.DialogInterface;
 import com.appaloosa_store.R;
 
 import appaloosa_store.com.appaloosa_android_tools.Appaloosa;
-import appaloosa_store.com.appaloosa_android_tools.exception.NullActivityException;
+import appaloosa_store.com.appaloosa_android_tools.utils.exception.NullActivityException;
 import appaloosa_store.com.appaloosa_android_tools.tools.callbacks.CheckLastUpdateCallback;
 import appaloosa_store.com.appaloosa_android_tools.tools.callbacks.DownloadProgressCallback;
 import appaloosa_store.com.appaloosa_android_tools.tools.models.MobileApplicationUpdate;

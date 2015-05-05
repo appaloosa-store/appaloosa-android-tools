@@ -16,18 +16,13 @@ import appaloosa_store.com.appaloosa_android_tools.tools.callbacks.CheckLastUpda
 import appaloosa_store.com.appaloosa_android_tools.tools.callbacks.DownloadProgressCallback;
 import appaloosa_store.com.appaloosa_android_tools.tools.callbacks.GetDownloadURLCallback;
 import appaloosa_store.com.appaloosa_android_tools.tools.models.MobileApplicationUpdate;
-import appaloosa_store.com.appaloosa_android_tools.utils.DeviceUtils;
 import appaloosa_store.com.appaloosa_android_tools.utils.SysUtils;
-import appaloosa_store.com.appaloosa_android_tools.utils.UrlUtils;
 
 public class AutoUpdateService {
 
-    private static final String APPLICATION_INFO_PATH = "%1$d/mobile_applications/%2$s.json?token=%3$s&imei=%4$s";
-    private static final String APPLICATION_DOWNLOAD_URL_PATH = "%1$d/mobile_applications/%2$d/install?token=%3$s&imei=%4$s";
-
     private static AutoUpdateService instance;
 
-    private String deviceIMEI;
+    private AutoUpdateUrlUtils autoUpdateUrlUtils;
     private DownloadProgressCallback downloadProgressCallback;
 
     public static AutoUpdateService getInstance() {
@@ -38,11 +33,11 @@ public class AutoUpdateService {
     }
 
     private AutoUpdateService() {
-        deviceIMEI = DeviceUtils.getImei();
+        autoUpdateUrlUtils = new AutoUpdateUrlUtils();
     }
 
     public void checkLastUpdate(CheckLastUpdateCallback callback) {
-        String url = this.buildApplicationInfoURL();
+        String url = autoUpdateUrlUtils.buildApplicationInfoURL();
         Ion.with(Appaloosa.getApplicationContext())
                 .load(url)
                 .as(new TypeToken<MobileApplicationUpdate>() {})
@@ -55,7 +50,7 @@ public class AutoUpdateService {
     }
 
     private void getDownloadURL(MobileApplicationUpdate mobileApplicationUpdate) {
-        String url = this.buildGetDownloadURL(mobileApplicationUpdate.getMobileApplicationUpdateId());
+        String url = autoUpdateUrlUtils.buildGetDownloadURL(mobileApplicationUpdate.getMobileApplicationUpdateId());
         Ion.with(Appaloosa.getApplicationContext())
                 .load(url)
                 .asJsonObject()
@@ -82,18 +77,5 @@ public class AutoUpdateService {
                         downloadProgressCallback.dismissDialog();
                     }
                 });
-    }
-
-    //URL Builders
-
-    private String buildApplicationInfoURL() {
-        String formattedPackageName = SysUtils.getApplicationPackage().replaceAll("\\.", "%2E");
-        String path = String.format(APPLICATION_INFO_PATH, Appaloosa.getStoreId(), formattedPackageName, Appaloosa.getStoreToken(), deviceIMEI);
-        return UrlUtils.getServerBaseUrl() + path;
-    }
-
-    private String buildGetDownloadURL(int mau_id) {
-        String path = String.format(APPLICATION_DOWNLOAD_URL_PATH, Appaloosa.getStoreId(), mau_id, Appaloosa.getStoreToken(), deviceIMEI);
-        return UrlUtils.getServerBaseUrl() + path;
     }
 }

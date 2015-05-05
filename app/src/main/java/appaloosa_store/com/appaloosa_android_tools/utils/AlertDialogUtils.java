@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
-import appaloosa_store.com.appaloosa_android_tools.exception.NullActivityException;
+import appaloosa_store.com.appaloosa_android_tools.utils.exception.NullActivityException;
 
 public class AlertDialogUtils {
     public static void showConfirmDialog(final Activity activity, String title, String message, DialogInterface.OnClickListener positiveButtonListener) throws NullActivityException {

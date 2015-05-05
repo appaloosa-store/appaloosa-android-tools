@@ -78,10 +78,27 @@ public static enum Status {
 
 ### Analytics
 
-This library allows you to gather intel on the way people use your app. Various user events will be recorded and sent ansynchronously to our servers. The graphs will be displayed in the admin view. Note that statistics may appear with delay. 
+This library allows you to gather intel on the way people use your app. Various user events will be recorded and sent asynchronously to our servers. The graphs will be displayed in the admin view. Note that statistics may appear with delay.
 
 To record analytics on your app usage, simply add the following line at the start of your application.
 ```
 Appaloosa.startAnalytics();
 ```
 *A prerequisite for the recording of analytics is to check if the user is blacklisted (see Authorization paragraph above). The recording of events starts as soon as the checkBlacklist is done.*
+
+### Auto-Update
+This library allows you to encourage updates by forcing the download of the new update when the application starts. Simply add the following line to your code :
+```
+Appaloosa.autoUpdate(INSTANCE_OF_THE_CURRENT_ACTIVITY);
+```
+
+The INSTANCE_OF_THE_CURRENT_ACTIVITY should be an object extending Activity. With this method, the SDK checks for an update and, if available, starts downloading it immediately. If the user is still on the Activity provided, a dialog appears showing the loading progress.
+Once downloaded, the SDK launches the Android installation process but the user can still cancel it.
+
+#### Customization
+If your prefer to leave the choice to the user to download or not the update, the following method will suit your needs :
+```
+Appaloosa.autoUpdateWithMessage(INSTANCE_OF_THE_CURRENT_ACTIVITY, TITLE_OF_DIALOG, MESSAGE_OF_DIALOG);
+```
+
+This method will display a confirm dialog before download with the title and message provided. The user will have the choice to cancel or approve. The rest of the process is the same as the first method.
