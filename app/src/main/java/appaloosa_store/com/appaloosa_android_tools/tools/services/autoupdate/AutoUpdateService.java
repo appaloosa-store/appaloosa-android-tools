@@ -1,6 +1,8 @@
 package appaloosa_store.com.appaloosa_android_tools.tools.services.autoupdate;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.appaloosa_store.R;
 import com.google.gson.reflect.TypeToken;
@@ -41,11 +43,9 @@ public class AutoUpdateService {
 
     public void checkLastUpdate(CheckLastUpdateCallback callback) {
         String url = this.buildApplicationInfoURL();
-        Log.w(Appaloosa.APPALOOSA_LOG_TAG, "url : " + url);
         Ion.with(Appaloosa.getApplicationContext())
                 .load(url)
-                .as(new TypeToken<MobileApplicationUpdate>() {
-                })
+                .as(new TypeToken<MobileApplicationUpdate>() {})
                 .setCallback(callback);
     }
 
@@ -56,7 +56,6 @@ public class AutoUpdateService {
 
     private void getDownloadURL(MobileApplicationUpdate mobileApplicationUpdate) {
         String url = this.buildGetDownloadURL(mobileApplicationUpdate.getMobileApplicationUpdateId());
-        Log.w(Appaloosa.APPALOOSA_LOG_TAG, "url : " + url);
         Ion.with(Appaloosa.getApplicationContext())
                 .load(url)
                 .asJsonObject()
@@ -64,23 +63,20 @@ public class AutoUpdateService {
                 .setCallback(new GetDownloadURLCallback(this, mobileApplicationUpdate));
     }
 
-    public void downloadAPK(final MobileApplicationUpdate mobileApplicationUpdate, String url) {
-        url = "http://admin.araokat.com/static/delivrables/app-debug.apk";
-        Log.w(Appaloosa.APPALOOSA_LOG_TAG, "url : " + url);
-        final File APKFile = SysUtils.getAPKFile(Appaloosa.getStoreId() + "_" + (mobileApplicationUpdate.getMobileApplicationUpdateId() +1));
+    public void downloadAPK(final MobileApplicationUpdate mobileApplicationUpdate, String downloadURL) {
+        final File APKFile = SysUtils.getAPKFile(Appaloosa.getStoreId() + "_" + (mobileApplicationUpdate.getMobileApplicationUpdateId() + 1));
         Ion.with(Appaloosa.getApplicationContext())
-                .load(url)
+                .load(downloadURL)
                 .progressHandler(downloadProgressCallback)
                 .write(APKFile)
                 .setCallback(new FutureCallback<File>() {
                     @Override
                     public void onCompleted(Exception e, File file) {
-                        if (e != null) {
-                            Log.w(Appaloosa.APPALOOSA_LOG_TAG, Appaloosa.getApplicationContext().getResources().getString(R.string.download_apk_error));
-                        } else if (file != null && file.length() == mobileApplicationUpdate.getBinarySize()){
-                            SysUtils.installAPK(file);
+                        if (e != null || file == null || file.length() != mobileApplicationUpdate.getBinarySize()) {
+                            Log.v(Appaloosa.APPALOOSA_LOG_TAG, Appaloosa.getApplicationContext().getResources().getString(R.string.download_apk_error));
+                            Context context = Appaloosa.getApplicationContext();
+                            Toast.makeText(context, context.getResources().getString(R.string.download_failed), Toast.LENGTH_LONG).show();
                         } else {
-                            Log.w(Appaloosa.APPALOOSA_LOG_TAG, "bad file length : " + file.length() + " instead of : " + mobileApplicationUpdate.getBinarySize());
                             SysUtils.installAPK(file);
                         }
                         downloadProgressCallback.dismissDialog();

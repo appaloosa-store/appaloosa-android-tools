@@ -6,7 +6,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
-import android.util.Log;
 
 import com.appaloosa_store.R;
 
@@ -54,7 +53,6 @@ public class SysUtils {
 
     public static void deleteExistingFiles(File Folder) {
         for(File f : Folder.listFiles()) {
-            Log.w(Appaloosa.APPALOOSA_LOG_TAG, "Delete : " + f.getName());
             f.delete();
         }
     }

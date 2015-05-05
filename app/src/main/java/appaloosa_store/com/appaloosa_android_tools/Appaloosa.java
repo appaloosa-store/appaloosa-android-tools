@@ -9,6 +9,7 @@ import com.appaloosa_store.R;
 
 import appaloosa_store.com.appaloosa_android_tools.analytics.AppaloosaAnalytics;
 import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaTools;
+import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaAutoUpdate;
 import appaloosa_store.com.appaloosa_android_tools.tools.interfaces.ApplicationAuthorizationInterface;
 
 public class Appaloosa {
@@ -72,11 +73,11 @@ public class Appaloosa {
     }
 
     public static void autoUpdate(Activity activity) {
-        AppaloosaTools.getInstance().autoUpdate(activity, false, null, null);
+        AppaloosaAutoUpdate.getInstance().autoUpdate(activity, false, null, null);
     }
 
     public static void autoUpdateWithMessage(Activity activity, String title, String message) {
-        AppaloosaTools.getInstance().autoUpdate(activity, true, title, message);
+        AppaloosaAutoUpdate.getInstance().autoUpdate(activity, true, title, message);
     }
 
     public static void setDevelopmentServerUrl(String developmentServerUrl) {
