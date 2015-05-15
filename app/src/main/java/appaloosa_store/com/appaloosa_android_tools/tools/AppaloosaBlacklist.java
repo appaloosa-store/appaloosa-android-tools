@@ -14,7 +14,7 @@ public class AppaloosaBlacklist {
 
     private static AppaloosaBlacklist instance;
 
-    public static AppaloosaBlacklist getInstance() {
+    public static synchronized AppaloosaBlacklist getInstance() {
         if(instance == null) {
             instance = new AppaloosaBlacklist();
         }

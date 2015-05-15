@@ -25,7 +25,7 @@ public class AppaloosaAutoUpdate {
 
     private static AppaloosaAutoUpdate instance;
 
-    public static AppaloosaAutoUpdate getInstance() {
+    public static synchronized AppaloosaAutoUpdate getInstance() {
         if(instance == null) {
             instance = new AppaloosaAutoUpdate();
         }

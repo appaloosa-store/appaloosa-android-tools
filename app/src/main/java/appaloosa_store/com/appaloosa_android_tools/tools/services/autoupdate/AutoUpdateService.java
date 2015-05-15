@@ -25,7 +25,7 @@ public class AutoUpdateService {
     private AutoUpdateUrlUtils autoUpdateUrlUtils;
     private DownloadProgressCallback downloadProgressCallback;
 
-    public static AutoUpdateService getInstance() {
+    public static synchronized AutoUpdateService getInstance() {
         if(instance == null) {
             instance = new AutoUpdateService();
         }
