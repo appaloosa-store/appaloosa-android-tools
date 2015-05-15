@@ -25,6 +25,6 @@
     <string name="check_last_update_error">An error occurred when looking for the last update on Appaloosa.</string>
     <string name="get_download_url_error">An error occurred when retrieving the last update download URL on Appaloosa.</string>
     <string name="download_apk_error">An error occurred when downloading the last update apk on Appaloosa.</string>
-    <string name="downloading_progress_message">New version download</string>
+    <string name="downloading_progress_message">"New version download: "</string>
     <string name="download_failed">Download error</string>
 </resources>

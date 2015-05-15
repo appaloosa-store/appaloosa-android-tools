@@ -76,7 +76,7 @@ public class AppaloosaAutoUpdate {
 
     private ProgressDialog createAndShowDownloadDialog() {
         ProgressDialog downloadProgressDialog = new ProgressDialog(autoUpdateActivity);
-        String dialogMessage = Appaloosa.getApplicationContext().getResources().getString(R.string.downloading_progress_message) + "...";
+        String dialogMessage = Appaloosa.getApplicationContext().getResources().getString(R.string.downloading_progress_message) + "0%";
         downloadProgressDialog.setMessage(dialogMessage);
         downloadProgressDialog.show();
         return downloadProgressDialog;

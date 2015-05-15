@@ -19,7 +19,7 @@ public class DownloadProgressCallback implements ProgressCallback {
     public void onProgress(long downloaded, long total) {
         String dialogMessage = Appaloosa.getApplicationContext().getResources().getString(R.string.downloading_progress_message);
         long percent = downloaded / total;
-        dialog.setMessage(dialogMessage + " : " + percent + "%");
+        dialog.setMessage(dialogMessage + percent + "%");
     }
 
     public void dismissDialog() {
