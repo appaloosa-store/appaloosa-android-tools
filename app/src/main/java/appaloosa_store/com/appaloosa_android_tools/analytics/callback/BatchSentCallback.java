@@ -10,14 +10,15 @@ import org.apache.http.HttpStatus;
 
 import java.util.List;
 
+import appaloosa_store.com.appaloosa_android_tools.Appaloosa;
 import appaloosa_store.com.appaloosa_android_tools.analytics.AppaloosaAnalytics;
 import appaloosa_store.com.appaloosa_android_tools.analytics.services.AnalyticsServices;
 import appaloosa_store.com.appaloosa_android_tools.utils.DeviceUtils;
 
 public class BatchSentCallback implements FutureCallback<Response<JsonObject>> {
 
-    private static final Integer MAX_NB_OF_TRY = 5;
-    private static final Long TIME_BETWEEN_TRY = 30000l;
+    private static final Integer MAX_NB_OF_TRY = 10;
+    private static final Long TIME_BETWEEN_TRY = 10000l;
 
     private List<Integer> eventIds;
     private JsonObject sentData;
@@ -61,15 +62,27 @@ public class BatchSentCallback implements FutureCallback<Response<JsonObject>> {
 
 
     private void retry(JsonObject data, int currentBatchSendAttemptNb) {
+        Log.w(Appaloosa.APPALOOSA_LOG_TAG, "retry : " + currentBatchSendAttemptNb);
         if (currentBatchSendAttemptNb < MAX_NB_OF_TRY) {
             try {
-                Thread.sleep(TIME_BETWEEN_TRY);
+                Thread.sleep(currentBatchSendAttemptNb * TIME_BETWEEN_TRY);
                 if (!DeviceUtils.getActiveNetwork().equals(DeviceUtils.NO_ACTIVE_NETWORK)) {
+                    Log.w(Appaloosa.APPALOOSA_LOG_TAG, "send time");
                     AnalyticsServices.send(eventIds, data, ++currentBatchSendAttemptNb);
                     return;
                 }
             } catch (InterruptedException ignored) {}
         }
+        Log.w(Appaloosa.APPALOOSA_LOG_TAG, "deleting : " + toString(eventIds));
+        AnalyticsServices.deleteEventsSent(eventIds);
         AnalyticsServices.sending = false;
+    }
+
+    private String toString(List<Integer> list) {
+        String res = "[";
+        for (Integer i : list) {
+            res += i + ",";
+        }
+        return res + "]";
     }
 }
