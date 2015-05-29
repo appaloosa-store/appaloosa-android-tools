@@ -74,12 +74,4 @@ public class BatchSentCallback implements FutureCallback<Response<JsonObject>> {
         AnalyticsServices.deleteEventsSent(eventIds);
         AnalyticsServices.sending = false;
     }
-
-    private String toString(List<Integer> list) {
-        String res = "[";
-        for (Integer i : list) {
-            res += i + ",";
-        }
-        return res + "]";
-    }
 }
