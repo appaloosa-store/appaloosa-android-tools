@@ -10,7 +10,6 @@ import appaloosa_store.com.appaloosa_android_tools.tools.interfaces.ApplicationA
 import appaloosa_store.com.appaloosa_android_tools.tools.services.blacklist.CheckBlacklistService;
 
 public class AppaloosaBlacklist {
-    private Activity blacklistActivity;
 
     private static AppaloosaBlacklist instance;
 
@@ -26,13 +25,6 @@ public class AppaloosaBlacklist {
             Log.e(Appaloosa.APPALOOSA_LOG_TAG, Appaloosa.getApplicationContext().getString(R.string.not_an_activity));
             return;
         }
-        this.blacklistActivity = (Activity) listeningActivity;
         CheckBlacklistService.checkBlacklist(listeningActivity);
-    }
-
-    public void finishActivity() {
-        if(this.blacklistActivity != null) {
-            this.blacklistActivity.finish();
-        }
     }
 }

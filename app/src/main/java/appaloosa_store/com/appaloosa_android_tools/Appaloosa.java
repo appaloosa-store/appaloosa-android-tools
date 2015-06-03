@@ -107,10 +107,16 @@ public class Appaloosa {
         AppaloosaAutoUpdate.getInstance().autoUpdate(activity, true, title, message);
     }
 
+    /**
+     * This method closes your application.
+     * @param activity The current activity.
+     */
     public static void closeApplication(Activity activity) {
-        Intent intent = new Intent(activity, CloseAndCleanActivity.class)
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        activity.startActivity(intent);
+        if (activity != null && !activity.isFinishing()) {
+            Intent intent = new Intent(activity, CloseAndCleanActivity.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            activity.startActivity(intent);
+        }
     }
 
     /**
