@@ -3,6 +3,7 @@ package appaloosa_store.com.appaloosa_android_tools;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.appaloosa_store.R;
@@ -11,6 +12,7 @@ import appaloosa_store.com.appaloosa_android_tools.analytics.AppaloosaAnalytics;
 import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaAutoUpdate;
 import appaloosa_store.com.appaloosa_android_tools.tools.AppaloosaBlacklist;
 import appaloosa_store.com.appaloosa_android_tools.tools.interfaces.ApplicationAuthorizationInterface;
+import appaloosa_store.com.appaloosa_android_tools.tools.interfaces.CloseAndCleanActivity;
 
 public class Appaloosa {
 
@@ -71,8 +73,9 @@ public class Appaloosa {
     /**
      * This method checks if the device is blacklisted or not.
      * With the two methods of the ApplicationAuthorizationInterface you can manage what
-     * information should be displayed to the user. In case of unauthorized use, the activity is
-     * finished after the call to isNotAuthorized(ApplicationAuthorization authorization);
+     * information should be displayed to the user. It is your responsibility to kill your
+     * application if the application is not authorized and we strongly recommend you to do so.
+     * You may use the method closeApplication(Activity activity) to finish your app.
      * @param activity It should be an Object extending an Activity object and implementing the
      *                 ApplicationAuthorizationInterface.
      */
@@ -102,6 +105,12 @@ public class Appaloosa {
      */
     public static void autoUpdateWithMessage(Activity activity, String title, String message) {
         AppaloosaAutoUpdate.getInstance().autoUpdate(activity, true, title, message);
+    }
+
+    public static void closeApplication(Activity activity) {
+        Intent intent = new Intent(activity, CloseAndCleanActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        activity.startActivity(intent);
     }
 
     /**

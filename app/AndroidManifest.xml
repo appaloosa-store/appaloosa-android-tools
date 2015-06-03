@@ -1,9 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.appaloosa_store"
-    android:versionCode ="@string/version_code"
-    android:versionName="@string/version_name">
+    android:versionCode="@string/version_code"
+    android:versionName="@string/version_name" >
 
     <application>
+        <activity android:name="appaloosa_store.com.appaloosa_android_tools.tools.interfaces.CloseAndCleanActivity" />
     </application>
 
 </manifest>

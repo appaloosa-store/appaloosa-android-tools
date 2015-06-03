@@ -13,10 +13,11 @@ Add authorization, analytics and auto-update features to your apps hosted on App
 ### Gradle
 Just add at your app level **build.gradle**
 ```
-compile('com.appaloosa-store:appaloosa-android-tools:+@aar') {
+compile('com.appaloosa-store:appaloosa-android-tools:VERSION_NUMBER@aar') {
         transitive=true
 }
 ```
+The latest stable release is 0.3.2.
 
 ### Maven
 Soon
@@ -55,11 +56,10 @@ Appaloosa.checkBlacklist(INSTANCE_OF_THE_CURRENT_ACTIVITY);
 ```
 
 The INSTANCE_OF_THE_CURRENT_ACTIVITY should be an Object extending Activity and implementing the ApplicationAuthorizationInterface we provide. The two methods to implement allow you to customize the behaviour as explained below.
-Now launch your app. The check is done asynchronously and no UI is displayed to the user. If the device is not authorized, the app is terminated.
+Now launch your app. The check is done asynchronously and no UI is displayed to the user. ***If the device is not authorized, it is the developer's responsibility to kill the app in the ```isNotAuthorized``` method.*** We provide a method ```closeApplication(Activity)``` to close your application.
 
 #### Customizing the behaviour
 In case you want to customize the authorization behaviour, you only need to override the isAuthorized(ApplicationAuthorization) and isNotAuthorized(ApplicationAuthorization) methods.
-The actions you specify in the isNotAuthorized method will be executed before the app is terminated.
 
 ApplicationAuthorization has the following statuses enum corresponding to all the authorization cases: 
 ```

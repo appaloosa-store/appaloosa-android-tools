@@ -76,7 +76,6 @@ public class CheckBlacklistService {
             Log.d(LOG_TAG, "device is authorized to launch this app");
         } else {
             authorizationInterface.isNotAuthorized(applicationAuthorization);
-            AppaloosaBlacklist.getInstance().finishActivity();
             Log.d(LOG_TAG, "device is NOT authorized to launch this app");
         }
     }
