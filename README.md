@@ -5,8 +5,9 @@ Add authorization, analytics and auto-update features to your apps hosted on App
 ## Prerequisites
 
 > - Android 4.0.3+ (API lvl 15)
-> - An account on https://www.appaloosa-store.com
+> - An Enterprise account on [Appaloosa Store](https://www.appaloosa-store.com)
 > - A native store must have been created for your account
+> - At least one login on the native store
 
 ## Installation
 
@@ -17,7 +18,7 @@ compile('com.appaloosa-store:appaloosa-android-tools:VERSION_NUMBER@aar') {
         transitive=true
 }
 ```
-The latest stable release is 0.3.2.
+The latest stable release is 0.3.3.
 
 ### Maven
 Soon
