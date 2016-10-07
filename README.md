@@ -49,7 +49,7 @@ To retrieve your Appaloosa store id and token, go to the Appaloosa web admin, th
 
 ### Permissions
 Since Android M, it is required for the developer to ask for sensitive permissions at runtime.
-Appaloosa uses the device's IMEI as an identifier (if available) ; so, if your app targets Android Marshmallow (API 23) or above, you have to ensure that the permission `android.permission.READ_PHONE_STATE` is allowed _before_ using the SDK blacklisting, analytics or auto-update capabilities. If the permssion is denied we advise to forid access to the app.
+Appaloosa uses the device's IMEI as an identifier (if available) ; so, if your app targets Android Marshmallow (API 23) or above, you have to ensure that the permission `android.permission.READ_PHONE_STATE` is allowed _before_ using the SDK blacklisting, analytics or auto-update capabilities. If the permssion is denied we advise to forbid access to the app.
 
 For UI flow tips and reference on runtime permissions, see [Google's Android developper training article](https://developer.android.com/training/permissions/requesting.html), or [Codepath's tutorial](http://guides.codepath.com/android/Understanding-App-Permissions).
 
