@@ -47,6 +47,13 @@ this.getApplication();
 To retrieve your Appaloosa store id and token, go to the Appaloosa web admin, then click on your store's name in the menu on the top right corner. Then, click on "settings" in the dropdown menu. At the bottom of the page, you'll find your store id and token.
 
 
+### Permissions
+Since Android M, it is required for the developer to ask for sensitive permissions at runtime.
+Appaloosa uses the device's IMEI as an identifier (if available) ; so, if your app targets Android Marshmallow (API 23) or above, you have to ensure that the permission `android.permission.READ_PHONE_STATE` is allowed _before_ using the SDK blacklisting, analytics or auto-update capabilities. If the permssion is denied we advise to forid access to the app.
+
+For UI flow tips and reference on runtime permissions, see [Google's Android developper training article](https://developer.android.com/training/permissions/requesting.html), or [Codepath's tutorial](http://guides.codepath.com/android/Understanding-App-Permissions).
+
+
 ### Authorization
 This library provides an app authorization mechanism. Via our web admin on https://www.appaloosa-store.com, you can manage a per device access. It works by sending device information to the Appaloosa servers. In case of an offline access to your app, the status is read from a protected file on the device.
 
