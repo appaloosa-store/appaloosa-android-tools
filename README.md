@@ -18,7 +18,7 @@ compile('com.appaloosa-store:appaloosa-android-tools:VERSION_NUMBER@aar') {
         transitive=true
 }
 ```
-The latest stable release is 0.3.3.
+The latest stable release is 0.3.4.
 
 ### Maven
 Soon
