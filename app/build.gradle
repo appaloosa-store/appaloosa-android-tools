@@ -1,16 +1,15 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
 
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
     }
     buildTypes {
+        debug {}
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -19,14 +18,7 @@ android {
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
-
-            java {
-                srcDir 'src/'
-            }
         }
-        androidTest.java.srcDirs=['test/src/']
-        androidTest.res.srcDirs=['test/res/']
-        androidTest.assets.srcDirs=['test/assets/']
     }
 }
 
@@ -69,7 +61,7 @@ afterEvaluate { project ->
                 pom.groupId = "com.appaloosa-store"
                 pom.artifactId = artifact_id
                 pom.version = versionName
-
+                
                 repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
                     authentication(userName: sonatypeUsername, password: sonatypePassword)
                 }
@@ -112,28 +104,6 @@ afterEvaluate { project ->
     signing {
         sign configurations.archives
     }
-
-    task androidJavadocs(type: Javadoc) {
-        source = android.sourceSets.main.java.srcDirs
-    }
-
-    task androidJavadocsJar(type: Jar) {
-        classifier = 'javadoc'
-        baseName = artifact_id
-        from androidJavadocs.destinationDir
-    }
-
-    task androidSourcesJar(type: Jar) {
-        classifier = 'sources'
-        baseName = artifact_id
-        from android.sourceSets.main.java.srcDirs
-    }
-
-    artifacts {
-        archives packageReleaseJar
-        archives androidSourcesJar
-        archives androidJavadocsJar
-    }
 }
 
 afterEvaluate { project ->
@@ -150,6 +120,8 @@ afterEvaluate { project ->
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:21.0.3'
+    testCompile 'junit:junit:4.12'
+    testCompile "org.robolectric:robolectric:3.1.2"
+    compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.koushikdutta.ion:ion:2.0.4'
 }
