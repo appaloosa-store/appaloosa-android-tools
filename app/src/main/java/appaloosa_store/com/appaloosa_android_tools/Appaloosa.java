@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.util.Log;
 
 import com.appaloosa_store.R;
@@ -39,7 +40,12 @@ public class Appaloosa {
     public static void init(Application application, Integer storeId, String storeToken) {
         Appaloosa.application = application;
         applicationContext = application.getApplicationContext();
-        Log.d(APPALOOSA_LOG_TAG, applicationContext.getResources().getString(R.string.starting_sdk));
+        try {
+            Log.d(
+                    APPALOOSA_LOG_TAG,
+                    applicationContext.getResources().getString(R.string.starting_sdk)
+            );
+        } catch (Resources.NotFoundException ignored) {}
         Appaloosa.storeId = storeId;
         Appaloosa.storeToken = storeToken;
     }

@@ -13,7 +13,7 @@ public class AutoUpdateUrlUtils {
     private String deviceIMEI;
 
     public AutoUpdateUrlUtils() {
-        deviceIMEI = DeviceUtils.getImei();
+        deviceIMEI = DeviceUtils.getDeviceID();
     }
 
     public String buildApplicationInfoURL() {

@@ -5,9 +5,8 @@ import android.content.Context;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -17,14 +16,11 @@ import android.view.WindowManager;
 
 import com.appaloosa_store.R;
 
-import org.apache.http.conn.util.InetAddressUtils;
-
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.security.MessageDigest;
 import java.util.Enumeration;
-import java.util.UUID;
 
 import appaloosa_store.com.appaloosa_android_tools.Appaloosa;
 
@@ -33,52 +29,33 @@ public class DeviceUtils{
     public static final String NO_ACTIVE_NETWORK = "none";
 
     public static String getDeviceID() {
-        final String imei = getImei();
-
-        if(imei != null)
-            return imei;
-        else
-            return getWifiMacAddress();
-    }
-
-    public static String getWifiMacAddress() {
-        WifiManager manager = (WifiManager) Appaloosa.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        WifiInfo wifiInfo = manager.getConnectionInfo();
-        if(wifiInfo == null || wifiInfo.getMacAddress() == null) {
-            return getRandomUUID();
+        Context context = Appaloosa.getApplicationContext();
+        if(deviceHasPhoneCapabilities(context)) {
+            return getImei();
         } else {
-            return wifiInfo.getMacAddress().replace(":", "").replace(".", "");
+            return getAndroidId(context);
         }
     }
 
-    private static String getRandomUUID() {
-        try {
-            return md5(UUID.randomUUID().toString());
-        } catch (Exception e) {
-            return "unknown";
-        }
+    private static boolean deviceHasPhoneCapabilities(Context context) {
+        return ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE))
+                .getPhoneType() != TelephonyManager.PHONE_TYPE_NONE;
     }
 
-    public static String getImei() {
-        TelephonyManager telephonyManager = (TelephonyManager) Appaloosa.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+    private static String getAndroidId(Context context) {
+        return Settings.Secure.getString(
+                context.getContentResolver(), Settings.Secure.ANDROID_ID
+        );
+    }
+
+    private static String getImei() {
+        TelephonyManager telephonyManager
+                = (TelephonyManager) Appaloosa.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
         String imei = null;
         if(telephonyManager != null) {
             imei = telephonyManager.getDeviceId();
         }
         return imei;
-    }
-
-    public static String md5(String s) throws Exception {
-        MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-
-        messageDigest.update(s.getBytes());
-        byte digest[] = messageDigest.digest();
-        StringBuffer result = new StringBuffer();
-
-        for(int i = 0; i < digest.length; i++) {
-            result.append(Integer.toHexString(0xFF & digest[i]));
-        }
-        return result.toString();
     }
 
     public static String getActiveNetwork() {
@@ -93,7 +70,7 @@ public class DeviceUtils{
                 NetworkInterface intf = en.nextElement();
                 for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress() && InetAddressUtils.isIPv4Address(inetAddress.getHostAddress()) ) {
+                    if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
                         return inetAddress.getHostAddress();
 
                     }
