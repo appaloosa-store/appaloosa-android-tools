@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Response;
 
-import org.apache.http.HttpStatus;
+import java.net.HttpURLConnection;
 
 import appaloosa_store.com.appaloosa_android_tools.Appaloosa;
 import appaloosa_store.com.appaloosa_android_tools.tools.models.MobileApplicationUpdate;
@@ -43,6 +43,7 @@ public class GetDownloadURLCallback implements FutureCallback<Response<JsonObjec
 
     private boolean httpStatusCodeOk(Response<JsonObject> result) {
         int httpCode = result.getHeaders().code();
-        return httpCode >= HttpStatus.SC_OK || httpCode < HttpStatus.SC_MULTIPLE_CHOICES;
+        return httpCode >= HttpURLConnection.HTTP_OK
+                || httpCode < HttpURLConnection.HTTP_MULT_CHOICE;
     }
 }

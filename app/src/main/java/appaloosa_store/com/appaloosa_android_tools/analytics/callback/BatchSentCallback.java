@@ -6,8 +6,7 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Response;
 
-import org.apache.http.HttpStatus;
-
+import java.net.HttpURLConnection;
 import java.util.List;
 
 import appaloosa_store.com.appaloosa_android_tools.analytics.AppaloosaAnalytics;
@@ -56,7 +55,8 @@ public class BatchSentCallback implements FutureCallback<Response<JsonObject>> {
 
     private boolean httpStatusCodeOk(Response<JsonObject> result) {
         int httpCode = result.getHeaders().code();
-        return httpCode >= HttpStatus.SC_OK || httpCode < HttpStatus.SC_MULTIPLE_CHOICES;
+        return httpCode >= HttpURLConnection.HTTP_OK
+                || httpCode < HttpURLConnection.HTTP_MULT_CHOICE;
     }
 
 
