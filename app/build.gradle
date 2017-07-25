@@ -123,5 +123,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile "org.robolectric:robolectric:3.1.2"
     compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.koushikdutta.ion:ion:2.0.4'
+    compile 'com.koushikdutta.ion:ion:2.1.6'
 }
