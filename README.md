@@ -86,13 +86,7 @@ public static enum Status {
 
 ### Analytics
 
-This library allows you to gather intel on the way people use your app. Various user events will be recorded and sent asynchronously to our servers. The graphs will be displayed in the admin view. Note that statistics may appear with delay.
-
-To record analytics on your app usage, simply add the following line at the start of your application.
-```
-Appaloosa.startAnalytics();
-```
-*A prerequisite for the recording of analytics is to check if the user is blacklisted (see Authorization paragraph above). The recording of events starts as soon as the checkBlacklist is done.*
+This feature is now deprecated and not supported anymore
 
 ### Auto-Update
 This library allows you to encourage updates by forcing the download of the new update when the application starts. Simply add the following line to your code :
